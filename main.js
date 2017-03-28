@@ -1,4 +1,4 @@
-require('marko/node-require').install();
+
 
 
 const electron = require('electron');
