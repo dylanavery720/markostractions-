@@ -2,7 +2,7 @@
   "name": "fire-sale",
   "version": "0.0.1",
   "description": "A Markdown-to-HTML renderer",
-  "main": "lib/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . 'Fire Sale' --platform=all --arch=all --version=0.36.8"
@@ -23,8 +23,11 @@
   "homepage": "https://github.com/stevekinney/firesale-tutorial#readme",
   "devDependencies": {
     "devtron": "^1.3.0",
+    "electron": "^1.6.2",
     "electron-packager": "^8.1.0",
     "electron-prebuilt": "^1.4.3",
+    "fs": "0.0.1-security",
+    "jquery": "^3.2.1",
     "spectron": "^3.4.0"
   },
   "dependencies": {

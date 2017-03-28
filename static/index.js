@@ -592,6 +592,9 @@ https://github.com/joyent/node/blob/master/lib/module.js
 })();
 
 $_mod.installed("fire-sale$0.0.1", "marko", "4.1.3");
+$_mod.remap("/marko$4.1.3/node-require", "/marko$4.1.3/node-require-browser");
+$_mod.def("/marko$4.1.3/node-require-browser", function(require, exports, module, __filename, __dirname) { exports.install = function() {};
+});
 $_mod.main("/marko$4.1.3/runtime/vdom", "");
 $_mod.installed("marko$4.1.3", "events-light", "1.0.5");
 $_mod.main("/events-light$1.0.5", "src/index");
@@ -4727,7 +4730,7 @@ require('/marko$4.1.3/runtime/createOut'/*'../createOut'*/).$__setCreateOut(crea
 });
 $_mod.def("/marko$4.1.3/vdom", function(require, exports, module, __filename, __dirname) { module.exports = require('/marko$4.1.3/runtime/vdom/index'/*'./runtime/vdom'*/);
 });
-$_mod.def("/fire-sale$0.0.1/lib/hello.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
+$_mod.def("/fire-sale$0.0.1/components/hello.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
 "use strict";
 
 var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*/).t();
@@ -4743,10 +4746,12 @@ function render(input, out) {
 marko_template._ = render;
 
 });
-$_mod.def("/fire-sale$0.0.1/lib/app", function(require, exports, module, __filename, __dirname) { var helloComponent = require('/fire-sale$0.0.1/lib/hello.marko'/*'./hello'*/);
+$_mod.run("/fire-sale$0.0.1/renderer");
+$_mod.def("/fire-sale$0.0.1/renderer", function(require, exports, module, __filename, __dirname) { require('/marko$4.1.3/node-require-browser'/*'marko/node-require'*/).install();
 
-helloComponent.renderSync({ name:'Marko' })
+var helloComponent = require('/fire-sale$0.0.1/components/hello.marko'/*'./components/hello.marko'*/);
+
+helloComponent.renderSync({ name:'Devin aka D Diddy Bop and her lousy band of miscreants' })
     .appendTo(document.body);
 
 });
-$_mod.run("/fire-sale$0.0.1/lib/app");
