@@ -1,6 +1,5 @@
 {
     "dependencies": [
-        "require-run: ./renderer.js",
-        "./style.css"
+        "require-run: ./renderer.js"
     ]
 }
