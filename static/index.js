@@ -5221,7 +5221,8 @@ window.$__MARKO_COMPONENTS = exports; // Helpful when debugging... WARNING: DO N
 $_mod.def("/fire-sale$0.0.1/components/electron-button/component", function(require, exports, module, __filename, __dirname) { module.exports = {
   minutes: (e)=> {
     e.preventDefault()
-    window.location.href='https://en.wikipedia.org/wiki/Special:Random'
+    let viewer = document.querySelector('.viewer')
+    viewer.innerHTML = window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
   hours: ()=> {
     console.log('Hours')
