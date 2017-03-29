@@ -1,11 +1,12 @@
 module.exports = {
-  minutes: function() {
-    console.log('Minutes')
+  minutes: (e)=> {
+    e.preventDefault()
+    window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
-  hours: function() {
+  hours: ()=> {
     console.log('Hours')
   },
-  days: function() {
+  days: ()=> {
     console.log('Days')
   }
 }

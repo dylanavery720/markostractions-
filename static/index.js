@@ -5219,13 +5219,14 @@ exports.rc = require('/marko$4.1.3/components/registry-browser'/*'./registry'*/)
 window.$__MARKO_COMPONENTS = exports; // Helpful when debugging... WARNING: DO NOT USE IN REAL CODE!
 });
 $_mod.def("/fire-sale$0.0.1/components/electron-button/component", function(require, exports, module, __filename, __dirname) { module.exports = {
-  minutes: function() {
-    console.log('Minutes')
+  minutes: (e)=> {
+    e.preventDefault()
+    window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
-  hours: function() {
+  hours: ()=> {
     console.log('Hours')
   },
-  days: function() {
+  days: ()=> {
     console.log('Days')
   }
 }
