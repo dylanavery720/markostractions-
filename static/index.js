@@ -5219,17 +5219,19 @@ exports.rc = require('/marko$4.1.3/components/registry-browser'/*'./registry'*/)
 window.$__MARKO_COMPONENTS = exports; // Helpful when debugging... WARNING: DO NOT USE IN REAL CODE!
 });
 $_mod.def("/fire-sale$0.0.1/components/electron-button/component", function(require, exports, module, __filename, __dirname) { module.exports = {
-  minutes: (e)=> {
+  read: (e)=> {
     e.preventDefault()
     let viewer = document.querySelector('.viewer')
     viewer.innerHTML = window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
-  hours: ()=> {
-    console.log('Hours')
+  watch: (e)=> {
+    e.preventDefault()
+    let viewer = document.querySelector('.viewer')
+    viewer.innerHTML = window.location.href='http://random.accessyoutube.org.uk/'
   },
-  days: ()=> {
-    console.log('Days')
-  }
+  // days: ()=> {
+  //   console.log('Days')
+  // }
 }
 
 });
@@ -5250,22 +5252,17 @@ function render(input, out, __component, component, state) {
   out.e("DIV", {
       "class": "btn-container",
       id: __component.id
-    }, 3, 4)
+    }, 2, 4)
     .e("BUTTON", {
         "class": "minutes-btn",
-        "data-_onclick": __component.d("minutes")
+        "data-_onclick": __component.d("read")
       }, 1, 4)
-      .t("Minutes")
+      .t("Read")
     .e("BUTTON", {
         "class": "hours-btn",
-        "data-_onclick": __component.d("hours")
+        "data-_onclick": __component.d("watch")
       }, 1, 4)
-      .t("Hours")
-    .e("BUTTON", {
-        "class": "days-btn",
-        "data-_onclick": __component.d("days")
-      }, 1, 4)
-      .t("Days");
+      .t("Watch");
 }
 
 marko_template._ = marko_components.r(render, {
