@@ -1,3 +1,0 @@
-{
-    "body": "<script src=\"%STATIC_PATH%/index.js\"></script>\n<script>$_mod.ready();</script>"
-}
