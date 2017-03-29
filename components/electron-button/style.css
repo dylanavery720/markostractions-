@@ -1,17 +1,17 @@
-.minutes-btn {
-  border: 1px solid black;
-  margin: 10px;
-  background-color: magenta;
+.btn-container {
+  display: flex;
 }
 
-.hours-btn {
-  border: 1px solid black;
-  margin: 10px;
-  background-color: yellow;
+.minutes-btn, .hours-btn, .days-btn {
+  flex: 1;
+  margin-bottom: 40px;
+  border: none;
+  height: 10vh;
+  font-size: 24px;
+  color: white;
+  background-color: #260C1A;
 }
 
-.days-btn {
-  border: 1px solid black;
-  margin: 10px;
-  background-color: aqua;
+.minutes-btn:hover, .hours-btn:hover, .days-btn:hover {
+  background-color: #832247;
 }

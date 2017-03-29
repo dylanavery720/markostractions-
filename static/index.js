@@ -5221,7 +5221,8 @@ window.$__MARKO_COMPONENTS = exports; // Helpful when debugging... WARNING: DO N
 $_mod.def("/fire-sale$0.0.1/components/electron-button/component", function(require, exports, module, __filename, __dirname) { module.exports = {
   minutes: (e)=> {
     e.preventDefault()
-    window.location.href='https://en.wikipedia.org/wiki/Special:Random'
+    let viewer = document.querySelector('.viewer')
+    viewer.innerHTML = window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
   hours: ()=> {
     console.log('Hours')
@@ -5246,35 +5247,58 @@ var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*
 function render(input, out, __component, component, state) {
   var data = input;
 
-  out.e("BUTTON", {
-      "class": "minutes-btn",
-      id: __component.elId("_r0"),
-      "data-_onclick": __component.d("minutes")
-    }, 1, 4)
-    .t("Minutes");
-
-  out.e("BUTTON", {
-      "class": "hours-btn",
-      id: __component.elId("_r1"),
-      "data-_onclick": __component.d("hours")
-    }, 1, 4)
-    .t("Hours");
-
-  out.e("BUTTON", {
-      "class": "days-btn",
-      id: __component.elId("_r2"),
-      "data-_onclick": __component.d("days")
-    }, 1, 4)
-    .t("Days");
+  out.e("DIV", {
+      "class": "btn-container",
+      id: __component.id
+    }, 3, 4)
+    .e("BUTTON", {
+        "class": "minutes-btn",
+        "data-_onclick": __component.d("minutes")
+      }, 1, 4)
+      .t("Minutes")
+    .e("BUTTON", {
+        "class": "hours-btn",
+        "data-_onclick": __component.d("hours")
+      }, 1, 4)
+      .t("Hours")
+    .e("BUTTON", {
+        "class": "days-btn",
+        "data-_onclick": __component.d("days")
+      }, 1, 4)
+      .t("Days");
 }
 
 marko_template._ = marko_components.r(render, {
-    type: marko_componentType,
-    roots: [
-      "_r0",
-      "_r1",
-      "_r2"
-    ]
+    type: marko_componentType
+  }, marko_component);
+
+marko_template.Component = marko_components.c(marko_component, marko_template._);
+
+});
+$_mod.def("/fire-sale$0.0.1/components/electron-view-section/component", function(require, exports, module, __filename, __dirname) { 
+});
+$_mod.def("/fire-sale$0.0.1/components/electron-view-section/index.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
+"use strict";
+
+var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*/).t(),
+    marko_components = require('/marko$4.1.3/components/index-browser'/*"marko/components"*/),
+    marko_registerComponent = marko_components.rc,
+    marko_componentType = marko_registerComponent("/fire-sale$0.0.1/components/electron-view-section/index.marko", function() {
+      return module.exports;
+    }),
+    marko_component = require('/fire-sale$0.0.1/components/electron-view-section/component'/*"./component"*/);
+
+function render(input, out, __component, component, state) {
+  var data = input;
+
+  out.e("DIV", {
+      "class": "viewer",
+      id: __component.id
+    }, 0, 4);
+}
+
+marko_template._ = marko_components.r(render, {
+    type: marko_componentType
   }, marko_component);
 
 marko_template.Component = marko_components.c(marko_component, marko_template._);
@@ -5289,7 +5313,9 @@ var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*
     marko_loadTag = marko_helpers.t,
     electron_header_tag = marko_loadTag(electron_header_template),
     electron_button_template = require('/fire-sale$0.0.1/components/electron-button/index.marko'/*"./electron-button/index.marko"*/),
-    electron_button_tag = marko_loadTag(electron_button_template);
+    electron_button_tag = marko_loadTag(electron_button_template),
+    electron_view_section_template = require('/fire-sale$0.0.1/components/electron-view-section/index.marko'/*"./electron-view-section/index.marko"*/),
+    electron_view_section_tag = marko_loadTag(electron_view_section_template);
 
 function render(input, out) {
   var data = input;
@@ -5297,6 +5323,8 @@ function render(input, out) {
   electron_header_tag({}, out);
 
   electron_button_tag({}, out);
+
+  electron_view_section_tag({}, out);
 }
 
 marko_template._ = render;
