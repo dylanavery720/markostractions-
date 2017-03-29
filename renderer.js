@@ -1,6 +1,6 @@
 require('marko/node-require').install();
 
-var helloComponent = require('./components/hello.marko');
+const template = require('./components/view.marko');
 
-helloComponent.renderSync({ name:'Devin aka D Diddy Bop and her lousy band of miscreants' })
+template.renderSync({ name:'Devin aka D Diddy Bop and her lousy band of miscreants' })
     .appendTo(document.body);

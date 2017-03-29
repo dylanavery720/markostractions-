@@ -4730,7 +4730,7 @@ require('/marko$4.1.3/runtime/createOut'/*'../createOut'*/).$__setCreateOut(crea
 });
 $_mod.def("/marko$4.1.3/vdom", function(require, exports, module, __filename, __dirname) { module.exports = require('/marko$4.1.3/runtime/vdom/index'/*'./runtime/vdom'*/);
 });
-$_mod.def("/fire-sale$0.0.1/components/hello.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
+$_mod.def("/fire-sale$0.0.1/components/electron-header/index.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
 "use strict";
 
 var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*/).t();
@@ -4746,12 +4746,220 @@ function render(input, out) {
 marko_template._ = render;
 
 });
+$_mod.def("/marko$4.1.3/runtime/helpers", function(require, exports, module, __filename, __dirname) { 'use strict';
+var isArray = Array.isArray;
+
+function isFunction(arg) {
+    return typeof arg == 'function';
+}
+
+function classList(arg, classNames) {
+    var len;
+
+    if (arg) {
+        if (typeof arg == 'string') {
+            if (arg) {
+                classNames.push(arg);
+            }
+        } else if (typeof (len = arg.length) == 'number') {
+            for (var i=0; i<len; i++) {
+                classList(arg[i], classNames);
+            }
+        } else if (typeof arg == 'object') {
+            for (var name in arg) {
+                if (arg.hasOwnProperty(name)) {
+                    var value = arg[name];
+                    if (value) {
+                        classNames.push(name);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function createDeferredRenderer(handler) {
+    function deferredRenderer(input, out) {
+        deferredRenderer.renderer(input, out);
+    }
+
+    // This is the initial function that will do the rendering. We replace
+    // the renderer with the actual renderer func on the first render
+    deferredRenderer.renderer = function(input, out) {
+        var rendererFunc = handler.renderer || handler._ || handler.render;
+        if (!isFunction(rendererFunc)) {
+            throw Error('Invalid renderer');
+        }
+        // Use the actual renderer from now on
+        deferredRenderer.renderer = rendererFunc;
+        rendererFunc(input, out);
+    };
+
+    return deferredRenderer;
+}
+
+function resolveRenderer(handler) {
+    var renderer = handler.renderer || handler._;
+
+    if (renderer) {
+        return renderer;
+    }
+
+    if (isFunction(handler)) {
+        return handler;
+    }
+
+    // If the user code has a circular function then the renderer function
+    // may not be available on the module. Since we can't get a reference
+    // to the actual renderer(input, out) function right now we lazily
+    // try to get access to it later.
+    return createDeferredRenderer(handler);
+}
+
+/**
+ * Internal helper method to prevent null/undefined from being written out
+ * when writing text that resolves to null/undefined
+ * @private
+ */
+exports.s = function strHelper(str) {
+    return (str == null) ? '' : str.toString();
+};
+
+/**
+ * Internal helper method to handle loops without a status variable
+ * @private
+ */
+exports.f = function forEachHelper(array, callback) {
+    if (isArray(array)) {
+        for (var i=0; i<array.length; i++) {
+            callback(array[i]);
+        }
+    } else if (isFunction(array)) {
+        // Also allow the first argument to be a custom iterator function
+        array(callback);
+    }
+};
+
+/**
+ * Helper to load a custom tag
+ */
+exports.t = function loadTagHelper(renderer, targetProperty, isRepeated) {
+    if (renderer) {
+        renderer = resolveRenderer(renderer);
+    }
+
+    return renderer;
+};
+
+/**
+ * classList(a, b, c, ...)
+ * Joines a list of class names with spaces. Empty class names are omitted.
+ *
+ * classList('a', undefined, 'b') --> 'a b'
+ *
+ */
+exports.cl = function classListHelper() {
+    var classNames = [];
+    classList(arguments, classNames);
+    return classNames.join(' ');
+};
+
+});
+$_mod.def("/marko$4.1.3/runtime/vdom/helpers", function(require, exports, module, __filename, __dirname) { 'use strict';
+
+var vdom = require('/marko$4.1.3/runtime/vdom/vdom'/*'./vdom'*/);
+var VElement = vdom.$__VElement;
+var VText = vdom.$__VText;
+
+var commonHelpers = require('/marko$4.1.3/runtime/helpers'/*'../helpers'*/);
+var extend = require('/raptor-util$3.2.0/extend'/*'raptor-util/extend'*/);
+
+var classList = commonHelpers.cl;
+
+exports.e = function(tagName, attrs, childCount, constId) {
+    return new VElement(tagName, attrs, childCount, constId);
+};
+
+exports.t = function(value) {
+    return new VText(value);
+};
+
+exports.const = function(id) {
+    var i=0;
+    return function() {
+        return id + (i++);
+    };
+};
+
+/**
+ * Internal helper method to handle the "class" attribute. The value can either
+ * be a string, an array or an object. For example:
+ *
+ * ca('foo bar') ==> ' class="foo bar"'
+ * ca({foo: true, bar: false, baz: true}) ==> ' class="foo baz"'
+ * ca(['foo', 'bar']) ==> ' class="foo bar"'
+ */
+exports.ca = function(classNames) {
+    if (!classNames) {
+        return null;
+    }
+
+    if (typeof classNames === 'string') {
+        return classNames;
+    } else {
+        return classList(classNames);
+    }
+};
+
+extend(exports, commonHelpers);
+
+});
+$_mod.def("/fire-sale$0.0.1/components/electron-button/index.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
+"use strict";
+
+var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*/).t();
+
+function render(input, out) {
+  var data = input;
+
+  out.e("BUTTON", null, 2)
+    .t(input.text)
+    .t(" click");
+}
+
+marko_template._ = render;
+
+});
+$_mod.def("/fire-sale$0.0.1/components/view.marko", function(require, exports, module, __filename, __dirname) { // Compiled using marko@4.1.3 - DO NOT EDIT
+"use strict";
+
+var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*/).t(),
+    electron_header_template = require('/fire-sale$0.0.1/components/electron-header/index.marko'/*"./electron-header/index.marko"*/),
+    marko_helpers = require('/marko$4.1.3/runtime/vdom/helpers'/*"marko/runtime/vdom/helpers"*/),
+    marko_loadTag = marko_helpers.t,
+    electron_header_tag = marko_loadTag(electron_header_template),
+    electron_button_template = require('/fire-sale$0.0.1/components/electron-button/index.marko'/*"./electron-button/index.marko"*/),
+    electron_button_tag = marko_loadTag(electron_button_template);
+
+function render(input, out) {
+  var data = input;
+
+  electron_header_tag({
+      "{name: ${input.name}}": true
+    }, out);
+
+  electron_button_tag({}, out);
+}
+
+marko_template._ = render;
+
+});
 $_mod.run("/fire-sale$0.0.1/renderer");
 $_mod.def("/fire-sale$0.0.1/renderer", function(require, exports, module, __filename, __dirname) { require('/marko$4.1.3/node-require-browser'/*'marko/node-require'*/).install();
 
-var helloComponent = require('/fire-sale$0.0.1/components/hello.marko'/*'./components/hello.marko'*/);
+const template = require('/fire-sale$0.0.1/components/view.marko'/*'./components/view.marko'*/);
 
-helloComponent.renderSync({ name:'Devin aka D Diddy Bop and her lousy band of miscreants' })
+template.renderSync({ name:'Devin aka D Diddy Bop and her lousy band of miscreants' })
     .appendTo(document.body);
 
 });
