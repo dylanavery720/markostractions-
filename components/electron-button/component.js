@@ -12,6 +12,9 @@ module.exports = {
     window.location.href='http://random.accessyoutube.org.uk/'
   },
   listen: (e)=> {
-    mainProcess.alerty()
+    window.location.href='https://splice.com/sounds/beatmaker'
   }
+  // draw: (e)=> {
+  //   window.location.href='https://quickdraw.withgoogle.com/'
+  // }
 }
