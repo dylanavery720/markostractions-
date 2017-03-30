@@ -21,10 +21,3 @@
 .minutes-btn:hover, .hours-btn:hover, .days-btn:hover {
   background-color: #832247;
 }
-
-.viewer {
-  margin: 0 auto;
-  border: 1px solid black;
-  /*width: 300px;
-  height: 300px;*/
-}

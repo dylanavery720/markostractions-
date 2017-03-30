@@ -6,9 +6,6 @@ const BrowserWindow = electron.BrowserWindow
 
 let mainWindow = null
 
-const alerty = exports.alerty = ()=> {
-  alert('alert!')
-}
 
 app.on('ready', ()=> {
   mainWindow = new BrowserWindow()
@@ -18,3 +15,9 @@ app.on('ready', ()=> {
     mainWindow = null
   })
 })
+
+
+
+const alerty = exports.alerty = ()=> {
+  alert('alert!')
+}
