@@ -6,7 +6,6 @@ const BrowserWindow = electron.BrowserWindow
 
 let mainWindow = null
 
-
 app.on('ready', ()=> {
   mainWindow = new BrowserWindow()
   mainWindow.loadURL('file://' + __dirname + '/index.marko')
@@ -15,8 +14,6 @@ app.on('ready', ()=> {
     mainWindow = null
   })
 })
-
-
 
 const alerty = exports.alerty = ()=> {
   alert('alert!')

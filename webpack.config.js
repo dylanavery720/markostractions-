@@ -13,7 +13,6 @@ module.exports = {
             {
                 test: /\.marko$/,
                 loader: 'marko-loader',
-
             },
             {
               test: /\.css$/,
@@ -22,14 +21,6 @@ module.exports = {
                 'css-loader',
               ],
             },
-            {
-              test: /\.scss$/,
-              use: [
-                'style-loader',
-                'css-loader?sourceMap',
-                'sass-loader?sourceMap',
-              ],
-            }
         ]
     },
 }
