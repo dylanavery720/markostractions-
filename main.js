@@ -1,22 +1,20 @@
-const electron = require('electron');
-const fs = require('fs');
+const electron = require('electron')
+const fs = require('fs')
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
 
-let mainWindow = null;
+let mainWindow = null
 
-app.on('ready', function () {
+const alerty = exports.alerty = ()=> {
+  alert('alert!')
+}
 
-  console.log('The application is ready.');
-
-  mainWindow = new BrowserWindow();
-
-  mainWindow.loadURL('file://' + __dirname + '/index.marko');
-
+app.on('ready', ()=> {
+  mainWindow = new BrowserWindow()
+  mainWindow.loadURL('file://' + __dirname + '/index.marko')
   mainWindow.webContents.openDevTools();
-
-  mainWindow.on('closed', function() {
-    mainWindow = null;
-  });
-});
+  mainWindow.on('closed', ()=> {
+    mainWindow = null
+  })
+})

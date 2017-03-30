@@ -4905,11 +4905,11 @@ var marko_template = module.exports = require('/marko$4.1.3/vdom'/*"marko/vdom"*
     marko_helpers = require('/marko$4.1.3/runtime/vdom/helpers'/*"marko/runtime/vdom/helpers"*/),
     marko_createElement = marko_helpers.e,
     marko_const = marko_helpers.const,
-    marko_const_nextId = marko_const("73648a"),
+    marko_const_nextId = marko_const("9c9bd8"),
     marko_node0 = marko_createElement("H1", {
         "class": "header"
       }, 1, 0, marko_const_nextId())
-      .t("How much time do you have to waste?");
+      .t("What do you want to do to distract yourself?");
 
 function render(input, out) {
   var data = input;
@@ -5222,16 +5222,13 @@ $_mod.def("/fire-sale$0.0.1/components/electron-button/component", function(requ
   read: (e)=> {
     e.preventDefault()
     let viewer = document.querySelector('.viewer')
-    viewer.innerHTML = window.location.href='https://en.wikipedia.org/wiki/Special:Random'
+    viewer.innerText = window.location.href='https://en.wikipedia.org/wiki/Special:Random'
   },
   watch: (e)=> {
     e.preventDefault()
     let viewer = document.querySelector('.viewer')
     viewer.innerHTML = window.location.href='http://random.accessyoutube.org.uk/'
-  },
-  // days: ()=> {
-  //   console.log('Days')
-  // }
+  }
 }
 
 });
