@@ -746,7 +746,7 @@ function render(input, out, __component, component, state) {
   out.e("DIV", {
       "class": "btn-container",
       id: __component.id
-    }, 4, 4)
+    }, 3, 4)
     .e("BUTTON", {
         "class": "minutes-btn",
         "data-_onclick": __component.d("read")
@@ -761,12 +761,7 @@ function render(input, out, __component, component, state) {
         "class": "hours-btn",
         "data-_onclick": __component.d("listen")
       }, 1, 4)
-      .t("Listen")
-    .e("BUTTON", {
-        "class": "draw-btn",
-        "data-_onclick": __component.d("draw")
-      }, 1, 4)
-      .t("Draw");
+      .t("Listen");
 }
 
 marko_template._ = marko_components.r(render, {
@@ -3058,22 +3053,23 @@ marko_template._ = render;
 const electron = __webpack_require__(9)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
+const currentWindow = remote.getCurrentWindow()
 
 module.exports = {
   read: (e)=> {
     e.preventDefault()
-    window.location.href='https://en.wikipedia.org/wiki/Special:Random'
+    mainProcess.createWindow(window.location.href='https://en.wikipedia.org/wiki/Special:Random')
   },
   watch: (e)=> {
     e.preventDefault()
-    window.location.href='http://random.accessyoutube.org.uk/'
+    mainProcess.createWindow(window.location.href='http://random.accessyoutube.org.uk/')
   },
   listen: (e)=> {
-    window.location.href='https://splice.com/sounds/beatmaker'
-  },
-  draw: (e)=> {
-    window.location.href='https://quickdraw.withgoogle.com/'
+    mainProcess.createWindow(window.location.href='https://splice.com/sounds/beatmaker')
   }
+  // draw: (e)=> {
+  //   window.location.href='https://quickdraw.withgoogle.com/'
+  // }
 }
 
 
