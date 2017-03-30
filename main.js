@@ -8,7 +8,7 @@ let mainWindow = null
 
 app.on('ready', ()=> {
   mainWindow = new BrowserWindow()
-  mainWindow.loadURL('file://' + __dirname + '/index.marko')
+  mainWindow.loadURL('file://' + __dirname + '/index.html')
   mainWindow.webContents.openDevTools();
   mainWindow.on('closed', ()=> {
     mainWindow = null
@@ -16,5 +16,5 @@ app.on('ready', ()=> {
 })
 
 const alerty = exports.alerty = ()=> {
-  alert('alert!')
+  console.log('alert!');
 }
