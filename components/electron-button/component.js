@@ -1,3 +1,7 @@
+const electron = require('electron')
+const remote = electron.remote
+const mainProcess = remote.require('./main')
+
 module.exports = {
   read: (e)=> {
     e.preventDefault()
@@ -8,6 +12,6 @@ module.exports = {
     window.location.href='http://random.accessyoutube.org.uk/'
   },
   listen: (e)=> {
-    alerty()
+    mainProcess.alerty()
   }
 }

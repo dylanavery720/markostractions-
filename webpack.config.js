@@ -1,19 +1,19 @@
 module.exports = {
     entry: "./renderer.js",
-    target: 'electron',
+    target: 'electron-renderer',
     output: {
         path: __dirname,
         filename: "static/bundle.js"
     },
     resolve: {
-        extensions: ['.js', '.marko']
+        extensions: ['.js'],
+        aliasFields: ["browser"]
     },
     module: {
         loaders: [
             {
-                test: /\.marko$/,
+                test: /\.marko/,
                 loader: 'marko-loader',
-
             },
             {
               test: /\.css$/,
@@ -22,14 +22,6 @@ module.exports = {
                 'css-loader',
               ],
             },
-            {
-              test: /\.scss$/,
-              use: [
-                'style-loader',
-                'css-loader?sourceMap',
-                'sass-loader?sourceMap',
-              ],
-            }
         ]
     },
 }

@@ -6,15 +6,15 @@ const BrowserWindow = electron.BrowserWindow
 
 let mainWindow = null
 
-const alerty = exports.alerty = ()=> {
-  alert('alert!')
-}
-
 app.on('ready', ()=> {
   mainWindow = new BrowserWindow()
-  mainWindow.loadURL('file://' + __dirname + '/index.marko')
+  mainWindow.loadURL('file://' + __dirname + '/index.html')
   mainWindow.webContents.openDevTools();
   mainWindow.on('closed', ()=> {
     mainWindow = null
   })
 })
+
+const alerty = exports.alerty = ()=> {
+  console.log('alert!');
+}
