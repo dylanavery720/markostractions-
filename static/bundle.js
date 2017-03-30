@@ -79,6 +79,7 @@ var runtimeId = markoGlobal.uid++;
 var componentLookup = {};
 
 var defaultDocument = document;
+var EMPTY_OBJECT = {};
 
 function getComponentForEl(el, doc) {
     if (el) {
@@ -129,7 +130,7 @@ var lifecycleEventMethods = {};
 function emitLifecycleEvent(component, eventType, eventArg1, eventArg2) {
     var listenerMethod = component[lifecycleEventMethods[eventType]];
 
-    if (listenerMethod) {
+    if (listenerMethod !== undefined) {
         listenerMethod.call(component, eventArg1, eventArg2);
     }
 
@@ -151,7 +152,7 @@ function destroyComponentForEl(el) {
 function destroyElRecursive(el) {
     var curChild = el.firstChild;
     while(curChild) {
-        if (curChild.nodeType == 1) {
+        if (curChild.nodeType === 1) {
             destroyComponentForEl(curChild);
             destroyElRecursive(curChild);
         }
@@ -181,6 +182,19 @@ function attachBubblingEvent(componentDef, handlerMethodName, extraArgs) {
     }
 }
 
+function getMarkoPropsFromEl(el) {
+    var virtualProps = el._vprops;
+    if (virtualProps === undefined) {
+        virtualProps = el.getAttribute('data-marko');
+        if (virtualProps) {
+            virtualProps = JSON.parse(virtualProps);
+        }
+        el._vprops = virtualProps = virtualProps || EMPTY_OBJECT;
+    }
+
+    return virtualProps;
+}
+
 exports.$__runtimeId = runtimeId;
 exports.$__componentLookup = componentLookup;
 exports.$__getComponentForEl = getComponentForEl;
@@ -190,6 +204,7 @@ exports.$__destroyElRecursive = destroyElRecursive;
 exports.$__nextComponentId = nextComponentId;
 exports.$__getElementById = getElementById;
 exports.$__attachBubblingEvent = attachBubblingEvent;
+exports.$__getMarkoPropsFromEl = getMarkoPropsFromEl;
 
 
 /***/ }),
@@ -216,7 +231,7 @@ module.exports = function extend(target, source) { //A simple function to copy p
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var copyProps = __webpack_require__(23);
+var copyProps = __webpack_require__(24);
 
 function inherit(ctor, superCtor, shouldCopyProps) {
     var oldProto = ctor.prototype;
@@ -242,9 +257,11 @@ inherit._inherit = inherit;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 /* jshint newcap:false */
+var specialElHandlers = __webpack_require__(18);
+
 function VNode() {}
 
 VNode.prototype = {
@@ -333,6 +350,13 @@ VNode.prototype = {
         while(curChild) {
             actualNode.appendChild(curChild.actualize(doc));
             curChild = curChild.nextSibling;
+        }
+
+        if (this.$__nodeType === 1) {
+            var elHandler = specialElHandlers[this.$__nodeName];
+            if (elHandler !== undefined) {
+                elHandler(actualNode, this);
+            }
         }
 
         return actualNode;
@@ -533,7 +557,7 @@ module.exports = EventEmitter;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var loadComponent = __webpack_require__(35);
+var loadComponent = __webpack_require__(36);
 var defineComponent = __webpack_require__(14);
 
 var registered = {};
@@ -729,16 +753,25 @@ function toComment(sourceMap) {
 
 __webpack_require__(50);
 __webpack_require__(11);
-// Compiled using marko@4.1.3 - DO NOT EDIT
+// Compiled using marko@4.2.0 - DO NOT EDIT
 "use strict";
 
 var marko_template = module.exports = __webpack_require__(8).t(),
-    marko_components = __webpack_require__(34),
+    marko_components = __webpack_require__(35),
     marko_registerComponent = marko_components.rc,
     marko_componentType = marko_registerComponent("/fire-sale$0.0.1/components/electron-button/index.marko", function() {
       return module.exports;
     }),
-    marko_component = __webpack_require__(26);
+    marko_component = __webpack_require__(27),
+    marko_attrs0 = {
+        "class": "minutes-btn"
+      },
+    marko_attrs1 = {
+        "class": "hours-btn"
+      },
+    marko_attrs2 = {
+        "class": "hours-btn"
+      };
 
 function render(input, out, __component, component, state) {
   var data = input;
@@ -747,20 +780,17 @@ function render(input, out, __component, component, state) {
       "class": "btn-container",
       id: __component.id
     }, 3, 4)
-    .e("BUTTON", {
-        "class": "minutes-btn",
-        "data-_onclick": __component.d("read")
-      }, 1, 4)
+    .e("BUTTON", marko_attrs0, 1, 0, {
+        onclick: __component.d("read")
+      })
       .t("Read")
-    .e("BUTTON", {
-        "class": "hours-btn",
-        "data-_onclick": __component.d("watch")
-      }, 1, 4)
+    .e("BUTTON", marko_attrs1, 1, 0, {
+        onclick: __component.d("watch")
+      })
       .t("Watch")
-    .e("BUTTON", {
-        "class": "hours-btn",
-        "data-_onclick": __component.d("listen")
-      }, 1, 4)
+    .e("BUTTON", marko_attrs2, 1, 0, {
+        onclick: __component.d("listen")
+      })
       .t("Listen");
 }
 
@@ -779,7 +809,7 @@ marko_template.Component = marko_components.c(marko_component, marko_template._)
 
 /* jshint newcap:false */
 
-var domInsert = __webpack_require__(19);
+var domInsert = __webpack_require__(20);
 var marko = __webpack_require__(41);
 var componentsUtil = __webpack_require__(0);
 var componentLookup = componentsUtil.$__componentLookup;
@@ -788,11 +818,11 @@ var destroyComponentForEl = componentsUtil.$__destroyComponentForEl;
 var destroyElRecursive = componentsUtil.$__destroyElRecursive;
 var getElementById = componentsUtil.$__getElementById;
 var EventEmitter = __webpack_require__(4);
-var RenderResult = __webpack_require__(18);
-var SubscriptionTracker = __webpack_require__(29);
+var RenderResult = __webpack_require__(19);
+var SubscriptionTracker = __webpack_require__(30);
 var inherit = __webpack_require__(2);
-var updateManager = __webpack_require__(37);
-var morphdom = __webpack_require__(38);
+var updateManager = __webpack_require__(38);
+var morphdom = __webpack_require__(39);
 var eventDelegation = __webpack_require__(15);
 
 var slice = Array.prototype.slice;
@@ -934,7 +964,7 @@ function checkInputChanged(existingComponent, oldInput, newInput) {
 }
 
 function onNodeDiscarded(node) {
-    if (node.nodeType == 1) {
+    if (node.nodeType === 1) {
         destroyComponentForEl(node);
     }
 }
@@ -943,13 +973,11 @@ function onBeforeNodeDiscarded(node) {
     return eventDelegation.$__handleNodeDetach(node);
 }
 
-function onBeforeElUpdated(fromEl, componentsContext) {
-    var id = fromEl.id;
+function onBeforeElUpdated(fromEl, key, componentsContext) {
+    if (componentsContext && key) {
+        var preserved = componentsContext.$__preserved[key];
 
-    if (componentsContext && id) {
-        var preserved = componentsContext.$__preserved[id];
-
-        if (preserved && !preserved.$__bodyOnly) {
+        if (preserved === true) {
             // Don't morph elements that are associated with components that are being
             // reused or elements that are being preserved. For components being reused,
             // the morphing will take place when the reused component updates.
@@ -963,11 +991,10 @@ function onBeforeElUpdated(fromEl, componentsContext) {
     }
 }
 
-function onBeforeElChildrenUpdated(el, componentsContext) {
-    var id = el.id;
-    if (componentsContext && id) {
-        var preserved = componentsContext.$__preserved[id];
-        if (preserved && preserved.$__bodyOnly) {
+function onBeforeElChildrenUpdated(el, key, componentsContext) {
+    if (componentsContext && key) {
+        var preserved = componentsContext.$__preservedBodies[key];
+        if (preserved === true) {
             // Don't morph the children since they are preserved
             return MORPHDOM_SKIP;
         }
@@ -985,7 +1012,7 @@ var componentProto;
  *
  * NOTE: Any methods that are prefixed with an underscore should be considered private!
  */
-function Component(id, doc) {
+function Component(id) {
     EventEmitter.call(this);
     this.id = id;
     this.el = null;
@@ -999,13 +1026,12 @@ function Component(id, doc) {
     this.$__renderInput = null;
     this.$__input = undefined;
 
-    this.$__destroyed =
-        this.$__updateQueued =
-        this.$__dirty =
-        this.$__settingInput =
-        false;
+    this.$__destroyed = false;
+    this.$__updateQueued = false;
+    this.$__dirty = false;
+    this.$__settingInput = false;
 
-    this.$__document = doc;
+    this.$__document = undefined;
 }
 
 Component.prototype = componentProto = {
@@ -1137,7 +1163,7 @@ Component.prototype = componentProto = {
         }
 
         if (!state) {
-                state = this.$__state = new this.$__State(this);
+            state = this.$__state = new this.$__State(this);
         }
 
         state.$__replace(newState || {});
@@ -1231,20 +1257,20 @@ Component.prototype = componentProto = {
     },
 
     update: function() {
-        if (this.$__destroyed || !this.$__isDirty) {
+        if (this.$__destroyed === true || this.$__isDirty === false) {
             return;
         }
 
         var input = this.$__input;
         var state = this.$__state;
 
-        if (!this.$__dirty && state && state.$__dirty) {
+        if (this.$__dirty === false && state !== null && state.$__dirty === true) {
             if (processUpdateHandlers(this, state.$__changes, state.$__old, state)) {
                 state.$__dirty = false;
             }
         }
 
-        if (this.$__isDirty) {
+        if (this.$__isDirty === true) {
             // The UI component is still dirty after process state handlers
             // then we should rerender
 
@@ -1258,7 +1284,7 @@ Component.prototype = componentProto = {
 
 
     get $__isDirty() {
-        return this.$__dirty || (this.$__state && this.$__state.$__dirty);
+        return this.$__dirty === true || (this.$__state !== null && this.$__state.$__dirty === true);
     },
 
     $__reset: function() {
@@ -1302,6 +1328,7 @@ Component.prototype = componentProto = {
         updateManager.$__batchUpdate(function() {
             var createOut = renderer.createOut || marko.createOut;
             var out = createOut(globalData);
+            out.sync();
             out.$__document = self.$__document;
             renderer(input, out);
             var result = new RenderResult(out);
@@ -1376,18 +1403,16 @@ Component.prototype = componentProto = {
     },
 
     $__setCustomEvents: function(customEvents, scope) {
-        if (customEvents) {
-            var finalCustomEvents = this.$__customEvents = {};
-            this.$__scope = scope;
+        var finalCustomEvents = this.$__customEvents = {};
+        this.$__scope = scope;
 
-            customEvents.forEach(function(customEvent) {
-                var eventType = customEvent[0];
-                var targetMethodName = customEvent[1];
-                var extraArgs = customEvent[2];
+        customEvents.forEach(function(customEvent) {
+            var eventType = customEvent[0];
+            var targetMethodName = customEvent[1];
+            var extraArgs = customEvent[2];
 
-                finalCustomEvents[eventType] = [targetMethodName, extraArgs];
-            });
-        }
+            finalCustomEvents[eventType] = [targetMethodName, extraArgs];
+        });
     }
 };
 
@@ -1575,7 +1600,9 @@ ComponentDef.$__deserialize = function(o, types) {
 
     var scope = extra.p;
     var customEvents = extra.e;
-    component.$__setCustomEvents(customEvents, scope);
+    if (customEvents) {
+        component.$__setCustomEvents(customEvents, scope);
+    }
 
     return {
         $__component: component,
@@ -1595,7 +1622,7 @@ module.exports = ComponentDef;
 
 /* jshint newcap:false */
 
-var BaseState = __webpack_require__(32);
+var BaseState = __webpack_require__(33);
 var BaseComponent = __webpack_require__(12);
 var inherit = __webpack_require__(2);
 
@@ -1625,8 +1652,8 @@ module.exports = function defineComponent(def, renderer) {
     // Instead, we store their constructor in the "initComponent"
     // property and that method gets called later inside
     // init-components-browser.js
-    function Component(id, doc) {
-        BaseComponent.call(this, id, doc);
+    function Component(id) {
+        BaseComponent.call(this, id);
     }
 
     if (!proto.$__isComponent) {
@@ -1644,7 +1671,7 @@ module.exports = function defineComponent(def, renderer) {
     // a component so that we can short-circuit this work later
     Component.$__isComponent = true;
 
-    function State() { BaseState.apply(this, arguments); }
+    function State(component) { BaseState.call(this, component); }
     inherit(State, BaseState);
     proto.$__State = State;
     proto.$__renderer = renderer;
@@ -1660,29 +1687,25 @@ module.exports = function defineComponent(def, renderer) {
 var componentsUtil = __webpack_require__(0);
 var runtimeId = componentsUtil.$__runtimeId;
 var componentLookup = componentsUtil.$__componentLookup;
+var getMarkoPropsFromEl = componentsUtil.$__getMarkoPropsFromEl;
+
 var isArray = Array.isArray;
 
 // We make our best effort to allow multiple marko runtimes to be loaded in the
 // same window. Each marko runtime will get its own unique runtime ID.
 var listenersAttachedKey = '$MED' + runtimeId;
 
-function getEventAttribute(el, attrName) {
-    var virtualAttrs = el._vattrs;
-
-    if (virtualAttrs) {
-        return virtualAttrs[attrName];
-    } else {
-        var attrValue = el.getAttribute(attrName);
-        if (attrValue) {
-            // <method_name> <component_id>[ <extra_args_index]
-            var parts = attrValue.split(' ');
-            if (parts.length == 3) {
-                parts[2] = parseInt(parts[2], 10);
-            }
-
-            return parts;
+function getEventFromEl(el, eventName) {
+    var virtualProps = getMarkoPropsFromEl(el);
+    var eventInfo = virtualProps[eventName];
+    if (typeof eventInfo === 'string') {
+        eventInfo = eventInfo.split(' ');
+        if (eventInfo.length == 3) {
+            eventInfo[2] = parseInt(eventInfo[2], 10);
         }
     }
+
+    return eventInfo;
 }
 
 function delegateEvent(node, target, event) {
@@ -1727,7 +1750,7 @@ function attachBubbleEventListeners(doc) {
     // we again walk up the tree starting at the target associated
     // with the event to find any mappings for event. Each mapping
     // is from a DOM event type to a method of a component.
-    __webpack_require__(33).forEach(function addBubbleHandler(eventType) {
+    __webpack_require__(34).forEach(function addBubbleHandler(eventType) {
         body.addEventListener(eventType, function(event) {
             var propagationStopped = false;
 
@@ -1746,14 +1769,14 @@ function attachBubbleEventListeners(doc) {
 
             // Search up the tree looking DOM events mapped to target
             // component methods
-            var attrName = 'data-_on' + eventType;
+            var propName = 'on' + eventType;
             var target;
 
             // Attributes will have the following form:
             // on<event_type>("<target_method>|<component_id>")
 
             do {
-                if ((target = getEventAttribute(curNode, attrName))) {
+                if ((target = getEventFromEl(curNode, propName))) {
                     delegateEvent(curNode, target, event);
 
                     if (propagationStopped) {
@@ -1770,7 +1793,7 @@ function noop() {}
 exports.$__handleNodeAttach = noop;
 exports.$__handleNodeDetach = noop;
 exports.$__delegateEvent = delegateEvent;
-exports.$__getEventAttribute = getEventAttribute;
+exports.$__getEventFromEl = getEventFromEl;
 
 exports.$__init = function(doc) {
     if (!doc[listenersAttachedKey]) {
@@ -1778,6 +1801,7 @@ exports.$__init = function(doc) {
         attachBubbleEventListeners(doc);
     }
 };
+
 
 /***/ }),
 /* 16 */
@@ -1997,9 +2021,92 @@ module.exports = function nextRepeatedId(out, parentId, id) {
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports) {
+
+function syncBooleanAttrProp(fromEl, toEl, name) {
+    if (fromEl[name] !== toEl[name]) {
+        fromEl[name] = toEl[name];
+        if (fromEl[name]) {
+            fromEl.setAttribute(name, '');
+        } else {
+            fromEl.removeAttribute(name, '');
+        }
+    }
+}
+
+module.exports = {
+    /**
+     * Needed for IE. Apparently IE doesn't think that "selected" is an
+     * attribute when reading over the attributes using selectEl.attributes
+     */
+    OPTION: function(fromEl, toEl) {
+        syncBooleanAttrProp(fromEl, toEl, 'selected');
+    },
+    /**
+     * The "value" attribute is special for the <input> element since it sets
+     * the initial value. Changing the "value" attribute without changing the
+     * "value" property will have no effect since it is only used to the set the
+     * initial value.  Similar for the "checked" attribute, and "disabled".
+     */
+    INPUT: function(fromEl, toEl) {
+        syncBooleanAttrProp(fromEl, toEl, 'checked');
+        syncBooleanAttrProp(fromEl, toEl, 'disabled');
+
+        if (fromEl.value != toEl.value) {
+            fromEl.value = toEl.value;
+        }
+
+        if (!toEl.$__hasAttribute('value')) {
+            fromEl.removeAttribute('value');
+        }
+    },
+
+    TEXTAREA: function(fromEl, toEl) {
+        var newValue = toEl.value;
+        if (fromEl.value != newValue) {
+            fromEl.value = newValue;
+        }
+
+        var firstChild = fromEl.firstChild;
+        if (firstChild) {
+            // Needed for IE. Apparently IE sets the placeholder as the
+            // node value and vise versa. This ignores an empty update.
+            var oldValue = firstChild.nodeValue;
+
+            if (oldValue == newValue || (!newValue && oldValue == fromEl.placeholder)) {
+                return;
+            }
+
+            firstChild.nodeValue = newValue;
+        }
+    },
+    SELECT: function(fromEl, toEl) {
+        if (!toEl.$__hasAttribute('multiple')) {
+            var selectedIndex = -1;
+            var i = 0;
+            var curChild = toEl.firstChild;
+            while(curChild) {
+                if (curChild.$__nodeName == 'OPTION') {
+                    if (curChild.$__hasAttribute('selected')) {
+                        selectedIndex = i;
+                        break;
+                    }
+                    i++;
+                }
+                curChild = curChild.nextSibling;
+            }
+
+            fromEl.selectedIndex = i;
+        }
+    }
+};
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var domInsert = __webpack_require__(19);
+var domInsert = __webpack_require__(20);
 var EMPTY_ARRAY = [];
 
 
@@ -2084,7 +2191,7 @@ domInsert(
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var extend = __webpack_require__(1);
@@ -2170,12 +2277,11 @@ module.exports = function(target, getEl, afterInsert) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var VNode = __webpack_require__(3);
 var inherit = __webpack_require__(2);
-var extend = __webpack_require__(1);
 
 var NS_XLINK = 'http://www.w3.org/1999/xlink';
 var ATTR_XLINK_HREF = 'xlink:href';
@@ -2187,13 +2293,8 @@ var FLAG_SIMPLE_ATTRS = 4;
 
 var defineProperty = Object.defineProperty;
 
-
 var ATTR_HREF = 'href';
 var EMPTY_OBJECT = Object.freeze({});
-var ATTR_MARKO_CONST = 'data-_mc';
-
-var specialAttrRegexp = /^data-_/;
-
 
 function convertAttrValue(type, value) {
     if (value === true) {
@@ -2205,20 +2306,43 @@ function convertAttrValue(type, value) {
     }
 }
 
-function VElementClone(other) {
-    extend(this, other);
-    this.$__parentNode = null;
-    this.$__nextSibling = null;
+function setAttribute(el, namespaceURI, name, value) {
+    if (namespaceURI === null) {
+        el.setAttribute(name, value);
+    } else {
+        el.setAttributeNS(namespaceURI, name, value);
+    }
 }
 
-function VElement(tagName, attrs, childCount, flags, constId) {
+function removeAttribute(el, namespaceURI, name) {
+    if (namespaceURI === null) {
+        el.removeAttribute(name);
+    } else {
+        el.removeAttributeNS(namespaceURI, name);
+    }
+}
+
+function VElementClone(other) {
+    this.$__firstChild = other.$__firstChild;
+    this.$__parentNode = null;
+    this.$__nextSibling = null;
+
+    this.$__attributes = other.$__attributes;
+    this.$__properties = other.$__properties;
+    this.$__namespaceURI = other.$__namespaceURI;
+    this.$__nodeName = other.$__nodeName;
+    this.$__flags = other.$__flags;
+    this.$__value = other.$__value;
+    this.$__constId = other.$__constId;
+}
+
+function VElement(tagName, attrs, childCount, flags, props) {
     this.$__VNode(childCount);
 
-    if (constId) {
-        if (!attrs) {
-            attrs = {};
-        }
-        attrs[ATTR_MARKO_CONST] = constId;
+    var constId;
+
+    if (props) {
+        constId = props.c;
     }
 
     var namespaceURI;
@@ -2230,8 +2354,9 @@ function VElement(tagName, attrs, childCount, flags, constId) {
     }
 
     this.$__attributes = attrs || EMPTY_OBJECT;
+    this.$__properties = props || EMPTY_OBJECT;
     this.$__namespaceURI = namespaceURI;
-    this.nodeName = tagName;
+    this.$__nodeName = tagName;
     this.$__value = null;
     this.$__constId = constId;
 }
@@ -2239,7 +2364,7 @@ function VElement(tagName, attrs, childCount, flags, constId) {
 VElement.prototype = {
     $__VElement: true,
 
-    nodeType: 1,
+    $__nodeType: 1,
 
     $__cloneNode: function() {
         return new VElementClone(this);
@@ -2252,8 +2377,8 @@ VElement.prototype = {
      * @param  {int|null} attrCount  The number of attributes (or `null` if not known)
      * @param  {int|null} childCount The number of child nodes (or `null` if not known)
      */
-    e: function(tagName, attrs, childCount, flags, constId) {
-        var child = this.$__appendChild(new VElement(tagName, attrs, childCount, flags, constId));
+    e: function(tagName, attrs, childCount, flags, props) {
+        var child = this.$__appendChild(new VElement(tagName, attrs, childCount, flags, props));
 
         if (childCount === 0) {
             return this.$__finishChild();
@@ -2261,8 +2386,6 @@ VElement.prototype = {
             return child;
         }
     },
-
-
 
     /**
      * Shorthand method for creating and appending a static node. The provided node is automatically cloned
@@ -2277,48 +2400,41 @@ VElement.prototype = {
 
     $__actualize: function(doc) {
         var namespaceURI = this.$__namespaceURI;
-        var tagName = this.nodeName;
+        var tagName = this.$__nodeName;
 
-        var el = namespaceURI ?
+        var attributes = this.$__attributes;
+        var flags = this.$__flags;
+
+        var el = namespaceURI !== undefined ?
             doc.createElementNS(namespaceURI, tagName) :
             doc.createElement(tagName);
 
-
-        var attributes = this.$__attributes;
         for (var attrName in attributes) {
             var attrValue = attributes[attrName];
-
-            if (attrName[5] == '_' && specialAttrRegexp.test(attrName)) {
-                continue;
-            }
 
             if (attrValue !== false && attrValue != null) {
                 var type = typeof attrValue;
 
-                if (type != 'string') {
+                if (type !== 'string') {
                     // Special attributes aren't copied to the real DOM. They are only
                     // kept in the virtual attributes map
                     attrValue = convertAttrValue(type, attrValue);
                 }
 
-                namespaceURI = null;
-
                 if (attrName == ATTR_XLINK_HREF) {
-                    namespaceURI = NS_XLINK;
-                    attrName = ATTR_HREF;
+                    setAttribute(el, NS_XLINK, ATTR_HREF, attrValue);
+                } else {
+                    el.setAttribute(attrName, attrValue);
                 }
-
-                el.setAttributeNS(namespaceURI, attrName, attrValue);
             }
         }
-
-        var flags = this.$__flags;
 
         if (flags & FLAG_IS_TEXTAREA) {
             el.value = this.$__value;
         }
 
         el._vattrs = attributes;
+        el._vprops = this.$__properties;
         el._vflags = flags;
 
         return el;
@@ -2331,22 +2447,6 @@ VElement.prototype = {
         var value = this.$__attributes[name];
         return value != null && value !== false;
     },
-
-    $__isSameNode: function(otherNode) {
-        if (otherNode.nodeType == 1) {
-            var constId = this.$__constId;
-            if (constId) {
-                var otherVirtualAttrs;
-
-                var otherConstId = otherNode.$__VNode ?
-                    otherNode.$__constId :
-                    (otherVirtualAttrs = otherNode._vattrs) && otherVirtualAttrs[ATTR_MARKO_CONST];
-                return constId === otherConstId;
-            }
-        }
-
-        return false;
-    }
 };
 
 inherit(VElement, VNode);
@@ -2396,7 +2496,9 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
 
     var removePreservedAttributes = VElement.$__removePreservedAttributes;
 
-    var attrs = toEl.$__attributes || toEl._vattrs;
+    var attrs = toEl.$__attributes;
+    var props = toEl.$__properties;
+
     var attrName;
     var i;
 
@@ -2409,6 +2511,7 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
     // so we build the attribute map from the expando property
 
     var oldAttrs = fromEl._vattrs;
+
     if (oldAttrs) {
         if (oldAttrs == attrs) {
             // For constant attributes the same object will be provided
@@ -2417,7 +2520,7 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
             // map.
             return;
         } else {
-            oldAttrs = removePreservedAttributes(oldAttrs, true);
+            oldAttrs = removePreservedAttributes(oldAttrs, props, true);
         }
     } else {
         // We need to build the attribute map from the real attributes
@@ -2429,21 +2532,24 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
 
             if (attr.specified !== false) {
                 attrName = attr.name;
-                var attrNamespaceURI = attr.namespaceURI;
-                if (attrNamespaceURI === NS_XLINK) {
-                    oldAttrs[ATTR_XLINK_HREF] = attr.value;
-                } else {
-                    oldAttrs[attrName] = attr.value;
+                if (attrName !== 'data-marko') {
+                    var attrNamespaceURI = attr.namespaceURI;
+                    if (attrNamespaceURI === NS_XLINK) {
+                        oldAttrs[ATTR_XLINK_HREF] = attr.value;
+                    } else {
+                        oldAttrs[attrName] = attr.value;
+                    }
                 }
             }
         }
 
         // We don't want preserved attributes to show up in either the old
         // or new attribute map.
-        removePreservedAttributes(oldAttrs, false);
+        removePreservedAttributes(oldAttrs, props, false);
     }
 
     fromEl._vattrs = attrs;
+    fromEl._vprops = props;
 
     var attrValue;
 
@@ -2451,13 +2557,13 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
     var oldFlags;
 
     if (flags & FLAG_SIMPLE_ATTRS && ((oldFlags = fromEl._vflags) & FLAG_SIMPLE_ATTRS)) {
-        if (oldAttrs['class'] != (attrValue = attrs['class'])) {
+        if (oldAttrs['class'] !== (attrValue = attrs['class'])) {
             fromEl.className = attrValue;
         }
-        if (oldAttrs.id != (attrValue = attrs.id)) {
+        if (oldAttrs.id !== (attrValue = attrs.id)) {
             fromEl.id = attrValue;
         }
-        if (oldAttrs.style != (attrValue = attrs.style)) {
+        if (oldAttrs.style !== (attrValue = attrs.style)) {
             fromEl.style.cssText = attrValue;
         }
         return;
@@ -2467,7 +2573,7 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
     // render or we don't want certain attributes to be touched. To support
     // that use case we delete out all of the preserved attributes
     // so it's as if they never existed.
-    attrs = removePreservedAttributes(attrs, true);
+    attrs = removePreservedAttributes(attrs, props, true);
 
     var namespaceURI;
 
@@ -2478,28 +2584,21 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
         attrValue = attrs[attrName];
         namespaceURI = null;
 
-        if (attrName == ATTR_XLINK_HREF) {
+        if (attrName === ATTR_XLINK_HREF) {
             namespaceURI = NS_XLINK;
             attrName = ATTR_HREF;
         }
 
         if (attrValue == null || attrValue === false) {
-            fromEl.removeAttributeNS(namespaceURI, attrName);
+            removeAttribute(fromEl, namespaceURI, attrName);
         } else if (oldAttrs[attrName] !== attrValue) {
-
-            if (attrName[5] == '_' && specialAttrRegexp.test(attrName)) {
-                // Special attributes aren't copied to the real DOM. They are only
-                // kept in the virtual attributes map
-                continue;
-            }
-
             var type = typeof attrValue;
 
-            if (type != 'string') {
+            if (type !== 'string') {
                 attrValue = convertAttrValue(type, attrValue);
             }
 
-            fromEl.setAttributeNS(namespaceURI, attrName, attrValue);
+            setAttribute(fromEl, namespaceURI, attrName, attrValue);
         }
     }
 
@@ -2507,13 +2606,11 @@ VElement.$__morphAttrs = function(fromEl, toEl) {
     // then we need to remove those attributes from the target node
     for (attrName in oldAttrs) {
         if (!(attrName in attrs)) {
-
-            if (attrName == ATTR_XLINK_HREF) {
-                namespaceURI = ATTR_XLINK_HREF;
-                attrName = ATTR_HREF;
+            if (attrName === ATTR_XLINK_HREF) {
+                fromEl.removeAttributeNS(ATTR_XLINK_HREF, ATTR_HREF);
+            } else {
+                fromEl.removeAttribute(attrName);
             }
-
-            fromEl.removeAttributeNS(namespaceURI, attrName);
         }
     }
 };
@@ -2522,13 +2619,13 @@ module.exports = VElement;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var vdom = __webpack_require__(22);
+var vdom = __webpack_require__(23);
 var VElement = vdom.$__VElement;
 var VText = vdom.$__VText;
 
@@ -2537,8 +2634,8 @@ var extend = __webpack_require__(1);
 
 var classList = commonHelpers.cl;
 
-exports.e = function(tagName, attrs, childCount, constId) {
-    return new VElement(tagName, attrs, childCount, constId);
+exports.e = function(tagName, attrs, childCount, flags, props) {
+    return new VElement(tagName, attrs, childCount, flags, props);
 };
 
 exports.t = function(value) {
@@ -2576,20 +2673,17 @@ extend(exports, commonHelpers);
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var VNode = __webpack_require__(3);
 var VComment = __webpack_require__(45);
 var VDocumentFragment = __webpack_require__(46);
-var VElement = __webpack_require__(20);
+var VElement = __webpack_require__(21);
 var VText = __webpack_require__(47);
-var FLAG_IS_TEXTAREA = 2;
 
+var FLAG_IS_TEXTAREA = 2;
 var defaultDocument = typeof document != 'undefined' && document;
-
-var FLAG_IS_TEXTAREA = 2;
-
 var specialHtmlRegexp = /[&<]/;
 var xmlnsRegExp = /^xmlns(:|$)/;
 
@@ -2628,7 +2722,9 @@ function virtualize(node) {
             }
 
             var vdomEl = new VElement(tagName, attrs, null, flags);
-            vdomEl.$__namespaceURI = node.namespaceURI;
+            if (node.namespaceURI !== 'http://www.w3.org/1999/xhtml') {
+                vdomEl.$__namespaceURI = node.namespaceURI;
+            }
 
             if (vdomEl.$__isTextArea) {
                 vdomEl.$__value = node.value;
@@ -2713,7 +2809,7 @@ exports.$__defaultDocument = defaultDocument;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = function copyProps(from, to) {
@@ -2724,7 +2820,7 @@ module.exports = function copyProps(from, to) {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -3020,16 +3116,16 @@ function updateLink(linkElement, options, obj) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Compiled using marko@4.1.3 - DO NOT EDIT
+// Compiled using marko@4.2.0 - DO NOT EDIT
 
 
 var marko_template = module.exports = __webpack_require__(8).t(),
-    electron_header_template = __webpack_require__(30),
-    marko_helpers = __webpack_require__(21),
+    electron_header_template = __webpack_require__(31),
+    marko_helpers = __webpack_require__(22),
     marko_loadTag = marko_helpers.t,
     electron_header_tag = marko_loadTag(electron_header_template),
     electron_button_template = __webpack_require__(11),
@@ -3047,25 +3143,26 @@ marko_template._ = render;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const electron = __webpack_require__(9)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
+const app = remote.app
 const currentWindow = remote.getCurrentWindow()
 
 module.exports = {
   read: (e)=> {
     e.preventDefault()
-    mainProcess.createWindow(window.location.href='https://en.wikipedia.org/wiki/Special:Random')
+    mainProcess.createWindow('https://en.wikipedia.org/wiki/Special:Random')
   },
   watch: (e)=> {
     e.preventDefault()
-    mainProcess.createWindow(window.location.href='http://random.accessyoutube.org.uk/')
+    mainProcess.createWindow('http://random.accessyoutube.org.uk/')
   },
   listen: (e)=> {
-    mainProcess.createWindow(window.location.href='https://splice.com/sounds/beatmaker')
+    mainProcess.createWindow('https://splice.com/sounds/beatmaker')
   }
   // draw: (e)=> {
   //   window.location.href='https://quickdraw.withgoogle.com/'
@@ -3074,7 +3171,7 @@ module.exports = {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -3088,7 +3185,7 @@ exports.push([module.i, ".btn-container {\n  display: flex;\n}\n\n.minutes-btn, 
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)(undefined);
@@ -3102,7 +3199,7 @@ exports.push([module.i, ".header {\n  text-align: center;\n  font-size: 36px;\n 
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 var INDEX_EVENT = 0;
@@ -3367,21 +3464,23 @@ exports.createTracker = function() {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(51);
-// Compiled using marko@4.1.3 - DO NOT EDIT
+// Compiled using marko@4.2.0 - DO NOT EDIT
 "use strict";
 
 var marko_template = module.exports = __webpack_require__(8).t(),
-    marko_helpers = __webpack_require__(21),
+    marko_helpers = __webpack_require__(22),
     marko_createElement = marko_helpers.e,
     marko_const = marko_helpers.const,
     marko_const_nextId = marko_const("9c9bd8"),
     marko_node0 = marko_createElement("H1", {
         "class": "header"
-      }, 1, 0, marko_const_nextId())
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
       .t("What do you want to do to distract yourself?");
 
 function render(input, out) {
@@ -3394,7 +3493,7 @@ marko_template._ = render;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3412,6 +3511,7 @@ function ComponentsContext(out, root) {
     this.$__out = out;
     this.$__componentStack = [root];
     this.$__preserved = EMPTY_OBJECT;
+    this.$__preservedBodies = EMPTY_OBJECT;
     this.$__componentsById = {};
 }
 
@@ -3455,11 +3555,15 @@ ComponentsContext.prototype = {
         return parent.$__nextId();
     },
     $__preserveDOMNode: function(elId, bodyOnly) {
-        var preserved = this.$__preserved;
-        if (preserved == EMPTY_OBJECT) {
-            preserved = this.$__preserved = {};
+        var preserved = bodyOnly === true ? this.$__preservedBodies : this.$__preserved;
+        if (preserved === EMPTY_OBJECT) {
+            if (bodyOnly === true) {
+                preserved = this.$__preservedBodies = {};
+            } else {
+                preserved = this.$__preserved = {};
+            }
         }
-        preserved[elId] = { $__bodyOnly: bodyOnly };
+        preserved[elId] = true;
     }
 };
 
@@ -3475,7 +3579,7 @@ module.exports = ComponentsContext;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var extend = __webpack_require__(1);
@@ -3494,20 +3598,14 @@ function ensure(state, propertyName) {
     }
 }
 
-function State(component, initialState) {
+function State(component) {
     this.$__component = component;
-    this.$__raw = initialState || {};
+    this.$__raw = {};
 
     this.$__dirty = false;
     this.$__old = null;
     this.$__changes = null;
     this.$__forced = null; // An object that we use to keep tracking of state properties that were forced to be dirty
-
-    if (initialState) {
-        for(var key in initialState) {
-            ensure(this, key);
-        }
-    }
 
     Object.seal(this);
 }
@@ -3580,8 +3678,9 @@ State.prototype = {
 
 module.exports = State;
 
+
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = [
@@ -3623,7 +3722,7 @@ module.exports = [
 ];
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var events = __webpack_require__(7);
@@ -3640,13 +3739,13 @@ exports.getComponentForEl = componentsUtil.$__getComponentForEl;
 exports.init = __webpack_require__(16).$__initServerRendered;
 
 exports.c = __webpack_require__(14); // Referenced by compiled templates
-exports.r = __webpack_require__(36); // Referenced by compiled templates
+exports.r = __webpack_require__(37); // Referenced by compiled templates
 exports.rc = __webpack_require__(5).$__register;  // Referenced by compiled templates
 
 window.$__MARKO_COMPONENTS = exports; // Helpful when debugging... WARNING: DO NOT USE IN REAL CODE!
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3656,7 +3755,7 @@ module.exports = function load(typeName) {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var componentsUtil = __webpack_require__(0);
@@ -3664,9 +3763,9 @@ var componentLookup = componentsUtil.$__componentLookup;
 var emitLifecycleEvent = componentsUtil.$__emitLifecycleEvent;
 var nextRepeatedId = __webpack_require__(17);
 var repeatedRegExp = /\[\]$/;
-var ComponentsContext = __webpack_require__(31);
+var ComponentsContext = __webpack_require__(32);
 var registry = __webpack_require__(5);
-var copyProps = __webpack_require__(23);
+var copyProps = __webpack_require__(24);
 
 var COMPONENT_BEGIN_ASYNC_ADDED_KEY = '$wa';
 
@@ -3821,16 +3920,19 @@ function createRendererFunc(templateRenderFunc, componentProps, renderingLogic) 
                 // so we don't want to queue it up as a result of calling `setInput()`
                 component.$__updateQueued = true;
 
-                component.$__setCustomEvents(customEvents, scope);
+                if (customEvents !== undefined) {
+                    component.$__setCustomEvents(customEvents, scope);
+                }
 
-                if (!isExisting) {
+
+                if (isExisting === false) {
                     emitLifecycleEvent(component, 'create', input, out);
                 }
 
                 input = component.$__setInput(input, onInput, out);
 
-                if (isExisting) {
-                    if (!component.$__isDirty || !component.shouldUpdate(input, component.$__state)) {
+                if (isExisting === true) {
+                    if (component.$__isDirty === false || component.shouldUpdate(input, component.$__state) === false) {
                         preserveComponentEls(component, out, componentsContext);
                         return;
                     }
@@ -3861,7 +3963,7 @@ createRendererFunc.$__handleBeginAsync = handleBeginAsync;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3999,39 +4101,27 @@ exports.$__queueComponentUpdate = queueComponentUpdate;
 exports.$__batchUpdate = batchUpdate;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var defaultDoc = typeof document == 'undefined' ? undefined : document;
-var specialElHandlers = __webpack_require__(39);
+var specialElHandlers = __webpack_require__(18);
 
-var morphAttrs = __webpack_require__(20).$__morphAttrs;
+var morphAttrs = __webpack_require__(21).$__morphAttrs;
 
 var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
 
-/**
- * Returns true if two node's names are the same.
- *
- * NOTE: We don't bother checking `namespaceURI` because you will never find two HTML elements with the same
- *       nodeName and different namespace URIs.
- *
- * @param {Element} a
- * @param {Element} b The target element
- * @return {boolean}
- */
 function compareNodeNames(fromEl, toEl) {
-    return fromEl.nodeName == toEl.nodeName;
+    return fromEl.nodeName === toEl.$__nodeName;
 }
 
-function replaceChild(child, newChild) {
-    if (child.parentNode) {
-        child.parentNode.replaceChild(newChild, child);
-    }
-    return newChild;
+
+function getElementById(doc, id) {
+    return doc.getElementById(id);
 }
 
 function morphdom(
@@ -4048,109 +4138,19 @@ function morphdom(
     var doc = fromNode.ownerDocument || defaultDoc;
 
     // This object is used as a lookup to quickly find all keyed elements in the original DOM tree.
-    var fromNodesLookup = {};
-    var keyedRemovalList;
+    var removalList = [];
+    var foundKeys = {};
 
-    function addKeyedRemoval(key) {
-        if (keyedRemovalList) {
-            keyedRemovalList.push(key);
-        } else {
-            keyedRemovalList = [key];
-        }
-    }
-
-    function walkDiscardedChildNodes(node, skipKeyedNodes) {
-        if (node.nodeType == ELEMENT_NODE) {
-            var curChild = node.firstChild;
-            while (curChild) {
-                var key;
-
-                if (skipKeyedNodes && (key = curChild.id)) {
-                    // If we are skipping keyed nodes then we add the key
-                    // to a list so that it can be handled at the very end.
-                    addKeyedRemoval(key);
-                } else {
-                    // Only report the node as discarded if it is not keyed. We do this because
-                    // at the end we loop through all keyed elements that were unmatched
-                    // and then discard them in one final pass.
-                    onNodeDiscarded(curChild);
-                    if (curChild.firstChild) {
-                        walkDiscardedChildNodes(curChild, skipKeyedNodes);
-                    }
-                }
-
-                curChild = curChild.nextSibling;
-            }
-        }
-    }
-
-    /**
-     * Removes a DOM node out of the original DOM
-     *
-     * @param  {Node} node The node to remove
-     * @param  {Node} parentNode The nodes parent
-     * @param  {Boolean} skipKeyedNodes If true then elements with keys will be skipped and not discarded.
-     * @return {undefined}
-     */
-    function removeNode(node, parentNode, skipKeyedNodes) {
-        if (onBeforeNodeDiscarded(node) == false) {
-            return;
-        }
-
-        if (parentNode) {
-            parentNode.removeChild(node);
-        }
-
+    function walkDiscardedChildNodes(node) {
         onNodeDiscarded(node);
-        walkDiscardedChildNodes(node, skipKeyedNodes);
-    }
+        var curChild = node.firstChild;
 
-    // // TreeWalker implementation is no faster, but keeping this around in case this changes in the future
-    // function indexTree(root) {
-    //     var treeWalker = document.createTreeWalker(
-    //         root,
-    //         NodeFilter.SHOW_ELEMENT);
-    //
-    //     var el;
-    //     while((el = treeWalker.nextNode())) {
-    //         var key = getNodeKey(el);
-    //         if (key) {
-    //             fromNodesLookup[key] = el;
-    //         }
-    //     }
-    // }
-
-    // // NodeIterator implementation is no faster, but keeping this around in case this changes in the future
-    //
-    // function indexTree(node) {
-    //     var nodeIterator = document.createNodeIterator(node, NodeFilter.SHOW_ELEMENT);
-    //     var el;
-    //     while((el = nodeIterator.nextNode())) {
-    //         var key = getNodeKey(el);
-    //         if (key) {
-    //             fromNodesLookup[key] = el;
-    //         }
-    //     }
-    // }
-
-    function indexTree(node) {
-        if (node.nodeType == ELEMENT_NODE) {
-            var curChild = node.firstChild;
-            while (curChild) {
-                var key = curChild.id;
-                if (key) {
-                    fromNodesLookup[key] = curChild;
-                }
-
-                // Walk recursively
-                indexTree(curChild);
-
-                curChild = curChild.nextSibling;
-            }
+        while (curChild) {
+            walkDiscardedChildNodes(curChild);
+            curChild = curChild.nextSibling;
         }
     }
 
-    indexTree(fromNode);
 
     function addVirtualNode(vEl, parentEl) {
         var realEl = vEl.$__actualize(doc);
@@ -4167,7 +4167,7 @@ function morphdom(
 
             var key = vCurChild.id;
             if (key) {
-                var unmatchedFromEl = fromNodesLookup[key];
+                var unmatchedFromEl = getElementById(doc, key);
                 if (unmatchedFromEl && compareNodeNames(vCurChild, unmatchedFromEl)) {
                     morphEl(unmatchedFromEl, vCurChild, false);
                     realEl.appendChild(realCurChild = unmatchedFromEl);
@@ -4181,26 +4181,36 @@ function morphdom(
             vCurChild = vCurChild.nextSibling;
         }
 
+        if (vEl.$__nodeType === 1) {
+            var elHandler = specialElHandlers[vEl.nodeName];
+            if (elHandler !== undefined) {
+                elHandler(realEl, vEl);
+            }
+        }
+
         return realEl;
     }
 
     function morphEl(fromEl, toEl, childrenOnly) {
+        var toElKey = toEl.id;
+        var nodeName = toEl.$__nodeName;
 
-        if (!childrenOnly) {
-            var toElKey = toEl.id;
-
-
+        if (childrenOnly === false) {
             if (toElKey) {
                 // If an element with an ID is being morphed then it is will be in the final
                 // DOM so clear it out of the saved elements collection
-                delete fromNodesLookup[toElKey];
+                foundKeys[toElKey] = true;
             }
 
-            if (toNode.$__isSameNode(fromNode)) {
-                return;
+            var constId = toEl.$__constId;
+            if (constId !== undefined) {
+                var otherProps = fromEl._vprops;
+                if (otherProps !== undefined && constId === otherProps.c) {
+                    return;
+                }
             }
 
-            if (onBeforeElUpdated(fromEl, context)) {
+            if (onBeforeElUpdated(fromEl, toElKey, context) === true) {
                 return;
             }
 
@@ -4208,11 +4218,11 @@ function morphdom(
         }
 
 
-        if (onBeforeElChildrenUpdated(fromEl, context)) {
+        if (onBeforeElChildrenUpdated(fromEl, toElKey, context) === true) {
             return;
         }
 
-        if (fromEl.nodeName != 'TEXTAREA') {
+        if (nodeName !== 'TEXTAREA') {
             var curToNodeChild = toEl.firstChild;
             var curFromNodeChild = fromEl.firstChild;
             var curToNodeKey;
@@ -4229,31 +4239,25 @@ function morphdom(
                 while (curFromNodeChild) {
                     fromNextSibling = curFromNodeChild.nextSibling;
 
-                    if (curToNodeChild.isSameNode && curToNodeChild.isSameNode(curFromNodeChild)) {
-                        curToNodeChild = toNextSibling;
-                        curFromNodeChild = fromNextSibling;
-                        continue outer;
-                    }
-
                     curFromNodeKey = curFromNodeChild.id;
 
                     var curFromNodeType = curFromNodeChild.nodeType;
 
                     var isCompatible = undefined;
 
-                    if (curFromNodeType == curToNodeChild.nodeType) {
-                        if (curFromNodeType == ELEMENT_NODE) {
+                    if (curFromNodeType === curToNodeChild.$__nodeType) {
+                        if (curFromNodeType === ELEMENT_NODE) {
                             // Both nodes being compared are Element nodes
 
                             if (curToNodeKey) {
                                 // The target node has a key so we want to match it up with the correct element
                                 // in the original DOM tree
-                                if (curToNodeKey != curFromNodeKey) {
+                                if (curToNodeKey !== curFromNodeKey) {
                                     // The current element in the original DOM tree does not have a matching key so
                                     // let's check our lookup to see if there is a matching element in the original
                                     // DOM tree
-                                    if ((matchingFromEl = fromNodesLookup[curToNodeKey])) {
-                                        if (curFromNodeChild.nextSibling == matchingFromEl) {
+                                    if ((matchingFromEl = getElementById(doc, curToNodeKey))) {
+                                        if (curFromNodeChild.nextSibling === matchingFromEl) {
                                             // Special case for single element removals. To avoid removing the original
                                             // DOM node out of the tree (since that can break CSS transitions, etc.),
                                             // we will instead discard the current node and wait until the next
@@ -4268,18 +4272,16 @@ function morphdom(
                                             // NOTE: We use insertBefore instead of replaceChild because we want to go through
                                             // the `removeNode()` function for the node that is being discarded so that
                                             // all lifecycle hooks are correctly invoked
+
+
                                             fromEl.insertBefore(matchingFromEl, curFromNodeChild);
 
-                                            fromNextSibling = curFromNodeChild.nextSibling;
-
-                                            if (curFromNodeKey) {
-                                                // Since the node is keyed it might be matched up later so we defer
-                                                // the actual removal to later
-                                                addKeyedRemoval(curFromNodeKey);
+                                            var curToNodeChildNextSibling = curToNodeChild.nextSibling;
+                                            if (curToNodeChildNextSibling && curToNodeChildNextSibling.id === curFromNodeKey) {
+                                                fromNextSibling = curFromNodeChild;
                                             } else {
-                                                // NOTE: we skip nested keyed nodes from being removed since there is
-                                                //       still a chance they will be matched up later
-                                                removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
+                                                fromNextSibling = curFromNodeChild.nextSibling;
+                                                removalList.push(curFromNodeChild);
                                             }
 
                                             curFromNodeChild = matchingFromEl;
@@ -4295,15 +4297,16 @@ function morphdom(
                                 isCompatible = false;
                             }
 
-                            isCompatible = isCompatible != false && compareNodeNames(curFromNodeChild, curToNodeChild);
-                            if (isCompatible) {
+                            isCompatible = isCompatible !== false && compareNodeNames(curFromNodeChild, curToNodeChild) === true;
+
+                            if (isCompatible === true) {
                                 // We found compatible DOM elements so transform
                                 // the current "from" node to match the current
                                 // target DOM node.
                                 morphEl(curFromNodeChild, curToNodeChild, false);
                             }
 
-                        } else if (curFromNodeType == TEXT_NODE || curFromNodeType == COMMENT_NODE) {
+                        } else if (curFromNodeType === TEXT_NODE || curFromNodeType === COMMENT_NODE) {
                             // Both nodes being compared are Text or Comment nodes
                             isCompatible = true;
                             // Simply update nodeValue on the original node to
@@ -4312,7 +4315,7 @@ function morphdom(
                         }
                     }
 
-                    if (isCompatible) {
+                    if (isCompatible === true) {
                         // Advance both the "to" child and the "from" child since we found a match
                         curToNodeChild = toNextSibling;
                         curFromNodeChild = fromNextSibling;
@@ -4325,15 +4328,7 @@ function morphdom(
                     // target tree and we don't want to discard it just yet since it still might find a
                     // home in the final DOM tree. After everything is done we will remove any keyed nodes
                     // that didn't find a home
-                    if (curFromNodeKey) {
-                        // Since the node is keyed it might be matched up later so we defer
-                        // the actual removal to later
-                        addKeyedRemoval(curFromNodeKey);
-                    } else {
-                        // NOTE: we skip nested keyed nodes from being removed since there is
-                        //       still a chance they will be matched up later
-                        removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
-                    }
+                    removalList.push(curFromNodeChild);
 
                     curFromNodeChild = fromNextSibling;
                 }
@@ -4342,7 +4337,7 @@ function morphdom(
                 // our "to node" and we exhausted all of the children "from"
                 // nodes. Therefore, we will just append the current "to" node
                 // to the end
-                if (curToNodeKey && (matchingFromEl = fromNodesLookup[curToNodeKey]) && compareNodeNames(matchingFromEl, curToNodeChild)) {
+                if (curToNodeKey && (matchingFromEl = getElementById(doc, curToNodeKey)) && compareNodeNames(matchingFromEl, curToNodeChild)) {
                     fromEl.appendChild(matchingFromEl);
                     morphEl(matchingFromEl, curToNodeChild, false);
                 } else {
@@ -4357,21 +4352,12 @@ function morphdom(
             // non-null then we still have some from nodes left over that need
             // to be removed
             while (curFromNodeChild) {
-                fromNextSibling = curFromNodeChild.nextSibling;
-                if ((curFromNodeKey = curFromNodeChild.id)) {
-                    // Since the node is keyed it might be matched up later so we defer
-                    // the actual removal to later
-                    addKeyedRemoval(curFromNodeKey);
-                } else {
-                    // NOTE: we skip nested keyed nodes from being removed since there is
-                    //       still a chance they will be matched up later
-                    removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
-                }
-                curFromNodeChild = fromNextSibling;
+                removalList.push(curFromNodeChild);
+                curFromNodeChild = curFromNodeChild.nextSibling;
             }
         }
 
-        var specialElHandler = specialElHandlers[fromEl.nodeName];
+        var specialElHandler = specialElHandlers[nodeName];
         if (specialElHandler) {
             specialElHandler(fromEl, toEl);
         }
@@ -4379,26 +4365,25 @@ function morphdom(
 
     var morphedNode = fromNode;
     var fromNodeType = morphedNode.nodeType;
-    var toNodeType = toNode.nodeType;
+    var toNodeType = toNode.$__nodeType;
     var morphChildrenOnly = false;
+    var shouldMorphEl = true;
+    var newNode;
 
     // Handle the case where we are given two DOM nodes that are not
     // compatible (e.g. <div> --> <span> or <div> --> TEXT)
     if (fromNodeType == ELEMENT_NODE) {
         if (toNodeType == ELEMENT_NODE) {
             if (!compareNodeNames(fromNode, toNode)) {
-                morphedNode = toNode.$__actualize(doc);
-                replaceChild(fromNode, morphedNode);
+                newNode = toNode.$__actualize(doc);
                 morphChildrenOnly = true;
-                onNodeDiscarded(fromNode);
-                walkDiscardedChildNodes(fromNode, true);
+                removalList.push(fromNode);
             }
         } else {
             // Going from an element node to a text or comment node
-            onNodeDiscarded(fromNode);
-            walkDiscardedChildNodes(fromNode, false);
-            morphedNode = toNode.$__actualize(doc);
-            return replaceChild(fromNode, morphedNode);
+            removalList.push(fromNode);
+            newNode = toNode.$__actualize(doc);
+            shouldMorphEl = false;
         }
     } else if (fromNodeType == TEXT_NODE || fromNodeType == COMMENT_NODE) { // Text or comment node
         if (toNodeType == fromNodeType) {
@@ -4406,114 +4391,48 @@ function morphdom(
             return morphedNode;
         } else {
             // Text node to something else
-            onNodeDiscarded(fromNode);
-            return replaceChild(fromNode, addVirtualNode(toNode));
+            removalList.push(fromNode);
+            newNode = addVirtualNode(toNode);
+            shouldMorphEl = false;
         }
     }
 
-    morphEl(morphedNode, toNode, morphChildrenOnly);
+    if (shouldMorphEl === true) {
+        morphEl(newNode || morphedNode, toNode, morphChildrenOnly);
+    }
+
+    if (newNode) {
+        if (fromNode.parentNode) {
+            fromNode.parentNode.replaceChild(newNode, fromNode);
+        }
+    }
 
     // We now need to loop over any keyed nodes that might need to be
     // removed. We only do the removal if we know that the keyed node
     // never found a match. When a keyed node is matched up we remove
     // it out of fromNodesLookup and we use fromNodesLookup to determine
     // if a keyed node has been matched up or not
-    if (keyedRemovalList) {
-        keyedRemovalList.forEach(function(key) {
-            var elToRemove = fromNodesLookup[key];
-            if (elToRemove) {
-                removeNode(elToRemove, elToRemove.parentNode, false);
+    for (var i=0, len=removalList.length; i<len; i++) {
+        var node = removalList[i];
+        var key = node.id;
+        if (!key || foundKeys[key] === undefined) {
+            if (onBeforeNodeDiscarded(node) == false) {
+                continue;
             }
-        });
+
+            var parentNode = node.parentNode;
+            if (parentNode) {
+                parentNode.removeChild(node);
+            }
+
+            walkDiscardedChildNodes(node);
+        }
     }
 
-    return morphedNode;
+    return newNode || morphedNode;
 }
 
 module.exports = morphdom;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-function syncBooleanAttrProp(fromEl, toEl, name) {
-    if (fromEl[name] !== toEl[name]) {
-        fromEl[name] = toEl[name];
-        if (fromEl[name]) {
-            fromEl.setAttribute(name, '');
-        } else {
-            fromEl.removeAttribute(name, '');
-        }
-    }
-}
-
-module.exports = {
-    /**
-     * Needed for IE. Apparently IE doesn't think that "selected" is an
-     * attribute when reading over the attributes using selectEl.attributes
-     */
-    OPTION: function(fromEl, toEl) {
-        syncBooleanAttrProp(fromEl, toEl, 'selected');
-    },
-    /**
-     * The "value" attribute is special for the <input> element since it sets
-     * the initial value. Changing the "value" attribute without changing the
-     * "value" property will have no effect since it is only used to the set the
-     * initial value.  Similar for the "checked" attribute, and "disabled".
-     */
-    INPUT: function(fromEl, toEl) {
-        syncBooleanAttrProp(fromEl, toEl, 'checked');
-        syncBooleanAttrProp(fromEl, toEl, 'disabled');
-
-        if (fromEl.value != toEl.value) {
-            fromEl.value = toEl.value;
-        }
-
-        if (!toEl.$__hasAttribute('value')) {
-            fromEl.removeAttribute('value');
-        }
-    },
-
-    TEXTAREA: function(fromEl, toEl) {
-        var newValue = toEl.value;
-        if (fromEl.value != newValue) {
-            fromEl.value = newValue;
-        }
-
-        var firstChild = fromEl.firstChild;
-        if (firstChild) {
-            // Needed for IE. Apparently IE sets the placeholder as the
-            // node value and vise versa. This ignores an empty update.
-            var oldValue = firstChild.nodeValue;
-
-            if (oldValue == newValue || (!newValue && oldValue == fromEl.placeholder)) {
-                return;
-            }
-
-            firstChild.nodeValue = newValue;
-        }
-    },
-    SELECT: function(fromEl, toEl) {
-        if (!toEl.$__hasAttribute('multiple')) {
-            var selectedIndex = -1;
-            var i = 0;
-            var curChild = toEl.firstChild;
-            while(curChild) {
-                if (curChild.nodeName == 'OPTION') {
-                    if (curChild.$__hasAttribute('selected')) {
-                        selectedIndex = i;
-                        break;
-                    }
-                    i++;
-                }
-                curChild = curChild.nextSibling;
-            }
-
-            fromEl.selectedIndex = i;
-        }
-    }
-};
 
 
 /***/ }),
@@ -4672,11 +4591,16 @@ var extend = __webpack_require__(1);
 function safeRender(renderFunc, finalData, finalOut, shouldEnd) {
     try {
         renderFunc(finalData, finalOut);
+
         if (shouldEnd) {
             finalOut.end();
         }
     } catch(err) {
+        var actualEnd = finalOut.end;
+        finalOut.end = function() {};
+
         setTimeout(function() {
+            finalOut.end = actualEnd;
             finalOut.error(err);
         }, 0);
     }
@@ -4807,13 +4731,13 @@ module.exports = function(target, renderer) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var EventEmitter = __webpack_require__(4);
-var vdom = __webpack_require__(22);
+var vdom = __webpack_require__(23);
 var VElement = vdom.$__VElement;
 var VDocumentFragment = vdom.$__VDocumentFragment;
 var VComment = vdom.$__VComment;
 var VText = vdom.$__VText;
 var virtualizeHTML = vdom.$__virtualizeHTML;
-var RenderResult = __webpack_require__(18);
+var RenderResult = __webpack_require__(19);
 var defaultDocument = vdom.$__defaultDocument;
 
 var FLAG_FINISHED = 1;
@@ -4848,6 +4772,7 @@ function AsyncVDOMBuilder(globalData, parentNode, state) {
     this.global = globalData || {};
     this.$__stack = [parentNode];
     this.$__sync = false;
+    this.$__vnode = undefined;
     this.$c = null; // Component args
 }
 
@@ -4860,7 +4785,7 @@ var proto = AsyncVDOMBuilder.prototype = {
 
         var parent = this.$__parent;
 
-        if(parent) {
+        if (parent !== undefined) {
             parent.$__appendChild(element);
         }
 
@@ -4875,7 +4800,7 @@ var proto = AsyncVDOMBuilder.prototype = {
 
     node: function(node) {
         var parent = this.$__parent;
-        if (parent) {
+        if (parent !== undefined) {
             parent.$__appendChild(node);
         }
         return this;
@@ -4887,7 +4812,7 @@ var proto = AsyncVDOMBuilder.prototype = {
         if (type != 'string') {
             if (text == null) {
                 return;
-            } else if (type == 'object') {
+            } else if (type === 'object') {
                 if (text.toHTML) {
                     return this.h(text.toHTML());
                 }
@@ -4897,7 +4822,7 @@ var proto = AsyncVDOMBuilder.prototype = {
         }
 
         var parent = this.$__parent;
-        if (parent) {
+        if (parent !== undefined) {
             var lastChild = parent.lastChild;
             if (lastChild && lastChild.$__Text) {
                 lastChild.nodeValue += text;
@@ -4924,7 +4849,7 @@ var proto = AsyncVDOMBuilder.prototype = {
     beginElement: function(name, attrs, childCount, flags, constId) {
         var element = new VElement(name, attrs, childCount, flags, constId);
         var parent = this.$__parent;
-        if (parent) {
+        if (parent !== undefined) {
             parent.$__appendChild(element);
             this.$__stack.push(element);
             this.$__parent = element;
@@ -4941,7 +4866,7 @@ var proto = AsyncVDOMBuilder.prototype = {
     end: function() {
         var state = this.$__state;
 
-        this.$__parent = null;
+        this.$__parent = undefined;
 
         var remaining = --state.$__remaining;
 
@@ -4951,7 +4876,7 @@ var proto = AsyncVDOMBuilder.prototype = {
             state.$__events.emit('last');
         }
 
-        if (!remaining) {
+        if (remaining === 0) {
             state.$__flags |= FLAG_FINISHED;
             state.$__events.emit(EVENT_FINISH, this.$__getResult());
         }
@@ -5097,15 +5022,11 @@ var proto = AsyncVDOMBuilder.prototype = {
     },
 
     $__getNode: function(doc) {
-        var node = this.$__VNode;
+        var node = this.$__vnode;
         if (!node) {
             var vdomTree = this.$__getOutput();
 
-            if (!doc) {
-                doc = this.$__document;
-            }
-
-            node = this.$__VNode = vdomTree.actualize(doc);
+            node = this.$__vnode = vdomTree.actualize(doc || this.$__document);
         }
         return node;
     },
@@ -5155,7 +5076,7 @@ function VComment(value) {
 }
 
 VComment.prototype = {
-    nodeType: 8,
+    $__nodeType: 8,
 
     $__actualize: function(doc) {
         return doc.createComment(this.nodeValue);
@@ -5191,7 +5112,7 @@ function VDocumentFragment(documentFragment) {
 }
 
 VDocumentFragment.prototype = {
-    nodeType: 11,
+    $__nodeType: 11,
 
     $__DocumentFragment: true,
 
@@ -5226,7 +5147,7 @@ function VText(value) {
 VText.prototype = {
     $__Text: true,
 
-    nodeType: 3,
+    $__nodeType: 3,
 
     $__actualize: function(doc) {
         return doc.createTextNode(this.nodeValue);
@@ -5387,10 +5308,10 @@ module.exports = function (css) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(27);
+var content = __webpack_require__(28);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(24)(content, {});
+var update = __webpack_require__(25)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5413,10 +5334,10 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(28);
+var content = __webpack_require__(29);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(24)(content, {});
+var update = __webpack_require__(25)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5513,7 +5434,7 @@ module.exports = function finalize(outer) {
 const electron = __webpack_require__(9)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
-const template = __webpack_require__(25)
+const template = __webpack_require__(26)
 
 template.renderSync()
     .appendTo(document.body);

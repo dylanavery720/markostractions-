@@ -5,21 +5,21 @@ const windows = new Set()
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
-let mainWindow = null
+let topWindow = null
 
-const createWindow = exports.createWindow = () => {
-  let newWindow = new BrowserWindow();
-  windows.add(newWindow)
-  newWindow.loadURL(`file://${__dirname}/index.html`);
-  // return newWindow
+const createWindow = exports.createWindow = (url) => {
+  let childWindow = new BrowserWindow({parent: topWindow, height: 300, width: 300, frame: false});
+  windows.add(childWindow)
+  childWindow.loadURL(url);
+  // return childWindow
 }
 
 app.on('ready', ()=> {
-  mainWindow = new BrowserWindow()
-  mainWindow.loadURL('file://' + __dirname + '/index.html')
-  mainWindow.webContents.openDevTools();
-  mainWindow.on('closed', ()=> {
-    mainWindow = null
+  topWindow = new BrowserWindow()
+  topWindow.loadURL('file://' + __dirname + '/index.html')
+  topWindow.webContents.openDevTools();
+  topWindow.on('closed', ()=> {
+    topWindow = null
   })
 })
 
