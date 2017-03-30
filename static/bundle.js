@@ -746,7 +746,7 @@ function render(input, out, __component, component, state) {
   out.e("DIV", {
       "class": "btn-container",
       id: __component.id
-    }, 3, 4)
+    }, 4, 4)
     .e("BUTTON", {
         "class": "minutes-btn",
         "data-_onclick": __component.d("read")
@@ -761,7 +761,12 @@ function render(input, out, __component, component, state) {
         "class": "hours-btn",
         "data-_onclick": __component.d("listen")
       }, 1, 4)
-      .t("Listen");
+      .t("Listen")
+    .e("BUTTON", {
+        "class": "draw-btn",
+        "data-_onclick": __component.d("draw")
+      }, 1, 4)
+      .t("Draw");
 }
 
 marko_template._ = marko_components.r(render, {
@@ -3064,7 +3069,10 @@ module.exports = {
     window.location.href='http://random.accessyoutube.org.uk/'
   },
   listen: (e)=> {
-    mainProcess.alerty()
+    window.location.href='https://splice.com/sounds/beatmaker'
+  },
+  draw: (e)=> {
+    window.location.href='https://quickdraw.withgoogle.com/'
   }
 }
 
@@ -5506,7 +5514,6 @@ module.exports = function finalize(outer) {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// require('marko/node-require').install()
 const electron = __webpack_require__(9)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
