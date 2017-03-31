@@ -8,7 +8,7 @@ const BrowserWindow = electron.BrowserWindow
 let topWindow = null
 
 const createWindow = exports.createWindow = (url) => {
-  let childWindow = new BrowserWindow({parent: topWindow, height: 300, width: 300, frame: false});
+  let childWindow = new BrowserWindow({parent: topWindow, height: 300, width: 300});
   windows.add(childWindow)
   childWindow.loadURL(url);
   // return childWindow

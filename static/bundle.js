@@ -260,7 +260,7 @@ inherit._inherit = inherit;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* jshint newcap:false */
-var specialElHandlers = __webpack_require__(18);
+var specialElHandlers = __webpack_require__(19);
 
 function VNode() {}
 
@@ -558,7 +558,7 @@ module.exports = EventEmitter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var loadComponent = __webpack_require__(36);
-var defineComponent = __webpack_require__(14);
+var defineComponent = __webpack_require__(15);
 
 var registered = {};
 var loaded = {};
@@ -658,16 +658,70 @@ module.exports = new EventEmitter();
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(48);
+"use strict";
+
+
+var vdom = __webpack_require__(23);
+var VElement = vdom.$__VElement;
+var VText = vdom.$__VText;
+
+var commonHelpers = __webpack_require__(40);
+var extend = __webpack_require__(1);
+
+var classList = commonHelpers.cl;
+
+exports.e = function(tagName, attrs, childCount, flags, props) {
+    return new VElement(tagName, attrs, childCount, flags, props);
+};
+
+exports.t = function(value) {
+    return new VText(value);
+};
+
+exports.const = function(id) {
+    var i=0;
+    return function() {
+        return id + (i++);
+    };
+};
+
+/**
+ * Internal helper method to handle the "class" attribute. The value can either
+ * be a string, an array or an object. For example:
+ *
+ * ca('foo bar') ==> ' class="foo bar"'
+ * ca({foo: true, bar: false, baz: true}) ==> ' class="foo baz"'
+ * ca(['foo', 'bar']) ==> ' class="foo bar"'
+ */
+exports.ca = function(classNames) {
+    if (!classNames) {
+        return null;
+    }
+
+    if (typeof classNames === 'string') {
+        return classNames;
+    } else {
+        return classList(classNames);
+    }
+};
+
+extend(exports, commonHelpers);
+
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(48);
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 /*
@@ -748,50 +802,96 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(50);
-__webpack_require__(11);
+__webpack_require__(12);
 // Compiled using marko@4.2.0 - DO NOT EDIT
 "use strict";
 
-var marko_template = module.exports = __webpack_require__(8).t(),
+var marko_template = module.exports = __webpack_require__(9).t(),
     marko_components = __webpack_require__(35),
     marko_registerComponent = marko_components.rc,
-    marko_componentType = marko_registerComponent("/fire-sale$0.0.1/components/electron-button/index.marko", function() {
+    marko_componentType = marko_registerComponent("/fire-sale$0.0.1/components/electron-grid/index.marko", function() {
       return module.exports;
     }),
     marko_component = __webpack_require__(27),
     marko_attrs0 = {
-        "class": "minutes-btn"
+        "class": "cell"
       },
     marko_attrs1 = {
-        "class": "hours-btn"
+        "class": "cell"
       },
     marko_attrs2 = {
-        "class": "hours-btn"
-      };
+        "class": "cell"
+      },
+    marko_helpers = __webpack_require__(8),
+    marko_createElement = marko_helpers.e,
+    marko_const = marko_helpers.const,
+    marko_const_nextId = marko_const("e0ed88"),
+    marko_node0 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Game"),
+    marko_node1 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Gif"),
+    marko_node2 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Beatmaker"),
+    marko_node3 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Useless Website"),
+    marko_node4 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Quick Draw"),
+    marko_node5 = marko_createElement("DIV", {
+        "class": "cell"
+      }, 1, 0, {
+        c: marko_const_nextId()
+      })
+      .t("Vapor Groove");
 
 function render(input, out, __component, component, state) {
   var data = input;
 
   out.e("DIV", {
-      "class": "btn-container",
+      "class": "grid",
       id: __component.id
-    }, 3, 4)
-    .e("BUTTON", marko_attrs0, 1, 0, {
+    }, 9, 4)
+    .e("DIV", marko_attrs0, 1, 0, {
         onclick: __component.d("read")
       })
-      .t("Read")
-    .e("BUTTON", marko_attrs1, 1, 0, {
+      .t("Wikipedia")
+    .e("DIV", marko_attrs1, 1, 0, {
         onclick: __component.d("watch")
       })
-      .t("Watch")
-    .e("BUTTON", marko_attrs2, 1, 0, {
+      .t("TED Talk")
+    .e("DIV", marko_attrs2, 1, 0, {
         onclick: __component.d("listen")
       })
-      .t("Listen");
+      .t("MTV")
+    .n(marko_node0)
+    .n(marko_node1)
+    .n(marko_node2)
+    .n(marko_node3)
+    .n(marko_node4)
+    .n(marko_node5);
 }
 
 marko_template._ = marko_components.r(render, {
@@ -802,14 +902,14 @@ marko_template.Component = marko_components.c(marko_component, marko_template._)
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /* jshint newcap:false */
 
-var domInsert = __webpack_require__(20);
+var domInsert = __webpack_require__(21);
 var marko = __webpack_require__(41);
 var componentsUtil = __webpack_require__(0);
 var componentLookup = componentsUtil.$__componentLookup;
@@ -818,12 +918,12 @@ var destroyComponentForEl = componentsUtil.$__destroyComponentForEl;
 var destroyElRecursive = componentsUtil.$__destroyElRecursive;
 var getElementById = componentsUtil.$__getElementById;
 var EventEmitter = __webpack_require__(4);
-var RenderResult = __webpack_require__(19);
+var RenderResult = __webpack_require__(20);
 var SubscriptionTracker = __webpack_require__(30);
 var inherit = __webpack_require__(2);
 var updateManager = __webpack_require__(38);
 var morphdom = __webpack_require__(39);
-var eventDelegation = __webpack_require__(15);
+var eventDelegation = __webpack_require__(16);
 
 var slice = Array.prototype.slice;
 
@@ -1452,12 +1552,12 @@ module.exports = Component;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var nextRepeatedId = __webpack_require__(17);
+var nextRepeatedId = __webpack_require__(18);
 var repeatedRegExp = /\[\]$/;
 var componentUtil = __webpack_require__(0);
 var nextComponentId = componentUtil.$__nextComponentId;
@@ -1615,7 +1715,7 @@ module.exports = ComponentDef;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1623,7 +1723,7 @@ module.exports = ComponentDef;
 /* jshint newcap:false */
 
 var BaseState = __webpack_require__(33);
-var BaseComponent = __webpack_require__(12);
+var BaseComponent = __webpack_require__(13);
 var inherit = __webpack_require__(2);
 
 module.exports = function defineComponent(def, renderer) {
@@ -1681,7 +1781,7 @@ module.exports = function defineComponent(def, renderer) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var componentsUtil = __webpack_require__(0);
@@ -1804,20 +1904,20 @@ exports.$__init = function(doc) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var warp10Finalize = __webpack_require__(52);
-var eventDelegation = __webpack_require__(15);
+var eventDelegation = __webpack_require__(16);
 var win = window;
 var defaultDocument = document;
 var events = __webpack_require__(7);
 var componentsUtil = __webpack_require__(0);
 var componentLookup = componentsUtil.$__componentLookup;
 var getElementById = componentsUtil.$__getElementById;
-var ComponentDef = __webpack_require__(13);
+var ComponentDef = __webpack_require__(14);
 // var extend = require('raptor-util/extend');
 // var registry = require('./registry');
 
@@ -1999,7 +2099,7 @@ exports.$__initClientRendered = initClientRendered;
 exports.$__initServerRendered = initServerRendered;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 var REPEATED_ID_KEY = '$rep';
@@ -2020,7 +2120,7 @@ module.exports = function nextRepeatedId(out, parentId, id) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 function syncBooleanAttrProp(fromEl, toEl, name) {
@@ -2103,10 +2203,10 @@ module.exports = {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var domInsert = __webpack_require__(20);
+var domInsert = __webpack_require__(21);
 var EMPTY_ARRAY = [];
 
 
@@ -2191,7 +2291,7 @@ domInsert(
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var extend = __webpack_require__(1);
@@ -2277,7 +2377,7 @@ module.exports = function(target, getEl, afterInsert) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var VNode = __webpack_require__(3);
@@ -2619,67 +2719,13 @@ module.exports = VElement;
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var vdom = __webpack_require__(23);
-var VElement = vdom.$__VElement;
-var VText = vdom.$__VText;
-
-var commonHelpers = __webpack_require__(40);
-var extend = __webpack_require__(1);
-
-var classList = commonHelpers.cl;
-
-exports.e = function(tagName, attrs, childCount, flags, props) {
-    return new VElement(tagName, attrs, childCount, flags, props);
-};
-
-exports.t = function(value) {
-    return new VText(value);
-};
-
-exports.const = function(id) {
-    var i=0;
-    return function() {
-        return id + (i++);
-    };
-};
-
-/**
- * Internal helper method to handle the "class" attribute. The value can either
- * be a string, an array or an object. For example:
- *
- * ca('foo bar') ==> ' class="foo bar"'
- * ca({foo: true, bar: false, baz: true}) ==> ' class="foo baz"'
- * ca(['foo', 'bar']) ==> ' class="foo bar"'
- */
-exports.ca = function(classNames) {
-    if (!classNames) {
-        return null;
-    }
-
-    if (typeof classNames === 'string') {
-        return classNames;
-    } else {
-        return classList(classNames);
-    }
-};
-
-extend(exports, commonHelpers);
-
-
-/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var VNode = __webpack_require__(3);
 var VComment = __webpack_require__(45);
 var VDocumentFragment = __webpack_require__(46);
-var VElement = __webpack_require__(21);
+var VElement = __webpack_require__(22);
 var VText = __webpack_require__(47);
 
 var FLAG_IS_TEXTAREA = 2;
@@ -3123,20 +3169,22 @@ function updateLink(linkElement, options, obj) {
 // Compiled using marko@4.2.0 - DO NOT EDIT
 
 
-var marko_template = module.exports = __webpack_require__(8).t(),
+var marko_template = module.exports = __webpack_require__(9).t(),
     electron_header_template = __webpack_require__(31),
-    marko_helpers = __webpack_require__(22),
+    marko_helpers = __webpack_require__(8),
     marko_loadTag = marko_helpers.t,
     electron_header_tag = marko_loadTag(electron_header_template),
-    electron_button_template = __webpack_require__(11),
-    electron_button_tag = marko_loadTag(electron_button_template);
+    electron_grid_template = __webpack_require__(12),
+    electron_grid_tag = marko_loadTag(electron_grid_template);
 
 function render(input, out) {
   var data = input;
 
   electron_header_tag({}, out);
 
-  electron_button_tag({}, out);
+  electron_grid_tag({
+      "class": "grid"
+    }, out);
 }
 
 marko_template._ = render;
@@ -3146,11 +3194,11 @@ marko_template._ = render;
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const electron = __webpack_require__(9)
+const electron = __webpack_require__(10)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
-const app = remote.app
 const currentWindow = remote.getCurrentWindow()
+
 
 module.exports = {
   read: (e)=> {
@@ -3174,12 +3222,12 @@ module.exports = {
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(undefined);
+exports = module.exports = __webpack_require__(11)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".btn-container {\n  display: flex;\n}\n\n.minutes-btn, .hours-btn, .days-btn {\n  flex: 1;\n  margin-bottom: 40px;\n  border: none;\n  height: 10vh;\n  font-size: 24px;\n  color: white;\n  background-color: #260C1A;\n}\n\n.minutes-btn:hover, .hours-btn:hover, .days-btn:hover {\n  background-color: #832247;\n}\n", ""]);
+exports.push([module.i, ".cell {\n  flex: 30%;\n  height: 150px;\n  background-color: blue;\n  /*margin-bottom: 5px;*/\n  color: white;\n  font-size: 20px;\n  text-align: center;\n  cursor: pointer;\n  font-style: fantasy;\n}\n\n.cell:nth-child(2) {\n  background-color: red;\n}\n\n.cell:nth-child(3) {\n  background-color: green;\n}\n\n.cell:nth-child(4) {\n  background-color: purple;\n}\n\n.cell:nth-child(5) {\n  background-color: yellow;\n  color: black;\n}\n\n.cell:nth-child(6) {\n  background-color: brown;\n}\n\n.cell:nth-child(7) {\n  background-color: beige;\n  color: black;\n}\n\n.cell:nth-child(8) {\n  background-color: darkgrey;\n}\n\n.cell:nth-child(9) {\n  background-color: pink;\n}\n\n.grid {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around;\n}\n", ""]);
 
 // exports
 
@@ -3188,12 +3236,12 @@ exports.push([module.i, ".btn-container {\n  display: flex;\n}\n\n.minutes-btn, 
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(undefined);
+exports = module.exports = __webpack_require__(11)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".header {\n  text-align: center;\n  font-size: 36px;\n  color: #260C1A;\n}\n", ""]);
+exports.push([module.i, ".header {\n  text-align: center;\n  font-size: 36px;\n  color: white;\n  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;\n}\n", ""]);
 
 // exports
 
@@ -3471,8 +3519,8 @@ __webpack_require__(51);
 // Compiled using marko@4.2.0 - DO NOT EDIT
 "use strict";
 
-var marko_template = module.exports = __webpack_require__(8).t(),
-    marko_helpers = __webpack_require__(22),
+var marko_template = module.exports = __webpack_require__(9).t(),
+    marko_helpers = __webpack_require__(8),
     marko_createElement = marko_helpers.e,
     marko_const = marko_helpers.const,
     marko_const_nextId = marko_const("9c9bd8"),
@@ -3499,8 +3547,8 @@ marko_template._ = render;
 "use strict";
 
 
-var ComponentDef = __webpack_require__(13);
-var initComponents = __webpack_require__(16);
+var ComponentDef = __webpack_require__(14);
+var initComponents = __webpack_require__(17);
 var EMPTY_OBJECT = {};
 
 function ComponentsContext(out, root) {
@@ -3726,7 +3774,7 @@ module.exports = [
 /***/ (function(module, exports, __webpack_require__) {
 
 var events = __webpack_require__(7);
-var Component = __webpack_require__(12);
+var Component = __webpack_require__(13);
 var componentsUtil = __webpack_require__(0);
 
 function onInitComponent(listener) {
@@ -3736,9 +3784,9 @@ function onInitComponent(listener) {
 exports.onInitComponent = onInitComponent;
 exports.Component = Component;
 exports.getComponentForEl = componentsUtil.$__getComponentForEl;
-exports.init = __webpack_require__(16).$__initServerRendered;
+exports.init = __webpack_require__(17).$__initServerRendered;
 
-exports.c = __webpack_require__(14); // Referenced by compiled templates
+exports.c = __webpack_require__(15); // Referenced by compiled templates
 exports.r = __webpack_require__(37); // Referenced by compiled templates
 exports.rc = __webpack_require__(5).$__register;  // Referenced by compiled templates
 
@@ -3761,7 +3809,7 @@ module.exports = function load(typeName) {
 var componentsUtil = __webpack_require__(0);
 var componentLookup = componentsUtil.$__componentLookup;
 var emitLifecycleEvent = componentsUtil.$__emitLifecycleEvent;
-var nextRepeatedId = __webpack_require__(17);
+var nextRepeatedId = __webpack_require__(18);
 var repeatedRegExp = /\[\]$/;
 var ComponentsContext = __webpack_require__(32);
 var registry = __webpack_require__(5);
@@ -4107,9 +4155,9 @@ exports.$__batchUpdate = batchUpdate;
 "use strict";
 
 var defaultDoc = typeof document == 'undefined' ? undefined : document;
-var specialElHandlers = __webpack_require__(18);
+var specialElHandlers = __webpack_require__(19);
 
-var morphAttrs = __webpack_require__(21).$__morphAttrs;
+var morphAttrs = __webpack_require__(22).$__morphAttrs;
 
 var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
@@ -4737,7 +4785,7 @@ var VDocumentFragment = vdom.$__VDocumentFragment;
 var VComment = vdom.$__VComment;
 var VText = vdom.$__VText;
 var virtualizeHTML = vdom.$__virtualizeHTML;
-var RenderResult = __webpack_require__(19);
+var RenderResult = __webpack_require__(20);
 var defaultDocument = vdom.$__defaultDocument;
 
 var FLAG_FINISHED = 1;
@@ -5431,7 +5479,7 @@ module.exports = function finalize(outer) {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const electron = __webpack_require__(9)
+const electron = __webpack_require__(10)
 const remote = electron.remote
 const mainProcess = remote.require('./main')
 const template = __webpack_require__(26)

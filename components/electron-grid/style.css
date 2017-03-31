@@ -1,0 +1,51 @@
+.cell {
+  flex: 30%;
+  height: 150px;
+  background-color: blue;
+  /*margin-bottom: 5px;*/
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  font-style: fantasy;
+}
+
+.cell:nth-child(2) {
+  background-color: red;
+}
+
+.cell:nth-child(3) {
+  background-color: green;
+}
+
+.cell:nth-child(4) {
+  background-color: purple;
+}
+
+.cell:nth-child(5) {
+  background-color: yellow;
+  color: black;
+}
+
+.cell:nth-child(6) {
+  background-color: brown;
+}
+
+.cell:nth-child(7) {
+  background-color: beige;
+  color: black;
+}
+
+.cell:nth-child(8) {
+  background-color: darkgrey;
+}
+
+.cell:nth-child(9) {
+  background-color: pink;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
