@@ -766,9 +766,9 @@ var marko_template = module.exports = __webpack_require__(8).t(),
             this.setState({ clicked: true });
         });
     },
-    wikipedia: function (e) {
+    distract: function (url, e) {
         e.preventDefault();
-        mainProcess.createWindow('https://en.wikipedia.org/wiki/Special:Random');
+        mainProcess.createWindow(url);
     },
     tedTalks: function (e) {
         e.preventDefault();
@@ -849,31 +849,45 @@ function render(input, out, __component, component, state) {
       id: __component.id
     }, 9, 4)
     .e("DIV", marko_attrs0, 1, 0, {
-        onclick: __component.d("wikipedia")
+        onclick: __component.d("distract", [
+            "https://en.wikipedia.org/wiki/Special:Random"
+          ])
       })
       .t("Wikipedia")
     .e("DIV", marko_attrs1, 1, 0, {
-        onclick: __component.d("tedTalks")
+        onclick: __component.d("distract", [
+            "http://random.accessyoutube.org.uk/"
+          ])
       })
       .t("TED Talk")
     .e("DIV", marko_attrs2, 1, 0, {
-        onclick: __component.d("beatMaker")
+        onclick: __component.d("distract", [
+            "https://splice.com/sounds/beatmaker"
+          ])
       })
       .t("Beat Maker")
     .e("DIV", marko_attrs3, 1, 0, {
-        onclick: __component.d("musicVideo")
+        onclick: __component.d("distract", [
+            "http://www.randomvideogenerator.com/"
+          ])
       })
       .t("Music Videos")
     .e("DIV", marko_attrs4, 1, 0, {
-        onclick: __component.d("trash")
+        onclick: __component.d("distract", [
+            "http://www.trashloop.com/"
+          ])
       })
       .t("Throw Your Trash Away")
     .e("DIV", marko_attrs5, 1, 0, {
-        onclick: __component.d("hustle")
+        onclick: __component.d("distract", [
+            "http://www.everydayim.com/"
+          ])
       })
       .t("Hustlin'")
     .e("DIV", marko_attrs6, 1, 0, {
-        onclick: __component.d("pointer")
+        onclick: __component.d("distract", [
+            "http://www.pointerpointer.com/"
+          ])
       })
       .t("Pointer")
     .e("DIV", marko_attrs7, 1, 0, {
