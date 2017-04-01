@@ -19,30 +19,51 @@ class {
     })
   }
 
-  read(e) {
+  wikipedia(e) {
     e.preventDefault()
-    this.setState({clicked:false})
     mainProcess.createWindow('https://en.wikipedia.org/wiki/Special:Random')
   }
-  watch(e){
+  tedTalks(e){
     e.preventDefault()
     mainProcess.createWindow('http://random.accessyoutube.org.uk/')
   }
-  listen(e){
+  beatMaker(e) {
+    e.preventDefault()
     mainProcess.createWindow('https://splice.com/sounds/beatmaker')
   }
-  draw(e){
-    console.log('check')
+  musicVideo(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.randomvideogenerator.com/')
+  }
+  trash(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.trashloop.com/')
+  }
+  hustle(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.everydayim.com/')
+  }
+  pointer(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.pointerpointer.com/')
+  }
+  gif(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.gifff.in/centered/')
+  }
+  staggeringBeaut(e) {
+    e.preventDefault()
+    mainProcess.createWindow('http://www.staggeringbeauty.com/')
   }
 }
 
 div.grid
-    div.cell on-click('read') -- Wikipedia
-    div.cell on-click('watch') -- TED Talk
-    div.cell on-click('listen') -- MTV
-    div.cell -- Game
-    div.cell -- Gif
-    div.cell -- Beatmaker
-    div.cell -- Useless Website
-    div.cell -- Quick Draw
-    div.cell -- Vapor Groove
+    div.cell on-click('wikipedia') -- Wikipedia
+    div.cell on-click('tedTalks') -- TED Talk
+    div.cell on-click('beatMaker') -- Beat Maker
+    div.cell on-click('musicVideo') -- Music Videos
+    div.cell on-click('trash') -- Throw Your Trash Away
+    div.cell on-click('hustle') -- Hustlin'
+    div.cell on-click('pointer') -- Pointer
+    div.cell on-click('gif') -- Gif
+    div.cell on-click('staggeringBeaut') -- Staggering Beauty
