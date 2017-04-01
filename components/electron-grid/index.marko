@@ -1,4 +1,41 @@
 
+static {
+const { ipcRenderer, app, shell, remote } = require('electron')
+const mainProcess = remote.require('./main')
+const currentWindow = remote.getCurrentWindow()
+}
+
+
+class {
+  onCreate() {
+    this.state = {
+      clicked: true
+    }
+  }
+
+  onMount() {
+    ipcRenderer.on('clicked', () => {
+      this.setState({clicked: true})
+    })
+  }
+
+  read(e) {
+    e.preventDefault()
+    this.setState({clicked:false})
+    mainProcess.createWindow('https://en.wikipedia.org/wiki/Special:Random')
+  }
+  watch(e){
+    e.preventDefault()
+    mainProcess.createWindow('http://random.accessyoutube.org.uk/')
+  }
+  listen(e){
+    mainProcess.createWindow('https://splice.com/sounds/beatmaker')
+  }
+  draw(e){
+    console.log('check')
+  }
+}
+
 div.grid
     div.cell on-click('read') -- Wikipedia
     div.cell on-click('watch') -- TED Talk
