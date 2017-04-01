@@ -14,7 +14,6 @@ module.exports = {
     mainProcess.createWindow('http://random.accessyoutube.org.uk/')
   },
   listen: (e)=> {
-    e.preventDefault()
     mainProcess.createWindow('https://splice.com/sounds/beatmaker')
   }
   // draw: (e)=> {

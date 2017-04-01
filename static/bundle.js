@@ -3182,9 +3182,7 @@ function render(input, out) {
 
   electron_header_tag({}, out);
 
-  electron_grid_tag({
-      "class": "grid"
-    }, out);
+  electron_grid_tag({}, out);
 }
 
 marko_template._ = render;
@@ -3523,7 +3521,7 @@ var marko_template = module.exports = __webpack_require__(9).t(),
     marko_helpers = __webpack_require__(8),
     marko_createElement = marko_helpers.e,
     marko_const = marko_helpers.const,
-    marko_const_nextId = marko_const("9c9bd8"),
+    marko_const_nextId = marko_const("ae6269"),
     marko_node0 = marko_createElement("H1", {
         "class": "header"
       }, 1, 0, {
