@@ -11,7 +11,9 @@ const createWindow = exports.createWindow = (url) => {
   let childWindow = new BrowserWindow({parent: topWindow, height: 300, width: 300});
   windows.add(childWindow)
   childWindow.loadURL(url);
-  // return childWindow
+  childWindow.on('close', () => {
+    childWindow.send('clicked')
+ })
 }
 
 app.on('ready', ()=> {
