@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton|Revalia');
+
 .header {
   text-align: center;
-  font-size: 36px;
-  color: white;
-  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+  font-size: 70px;
+  color: black;;
+  text-shadow: #20B2AA 0 0 10px, #FF6347 5px 5px 5px;
+  font-family: 'Monoton', cursive;
 }
