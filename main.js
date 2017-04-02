@@ -8,9 +8,9 @@ const BrowserWindow = electron.BrowserWindow
 let topWindow = null
 
 const createWindow = exports.createWindow = (url) => {
-  let childWindow = new BrowserWindow({parent: topWindow, height: 400, width: 500});
+  let childWindow = new BrowserWindow({parent: topWindow, height: 600, width: 700, title: 'loading...'})
   windows.add(childWindow)
-  childWindow.loadURL(url);
+  childWindow.loadURL(url)
   childWindow.on('close', () => {
     childWindow.send('clicked')
  })
@@ -18,13 +18,9 @@ const createWindow = exports.createWindow = (url) => {
 
 app.on('ready', ()=> {
   topWindow = new BrowserWindow()
-  topWindow.loadURL('file://' + __dirname + '/index.html')
+  topWindow.loadURL('file://' + __dirname + '/index.marko')
   topWindow.webContents.openDevTools();
   topWindow.on('closed', ()=> {
     topWindow = null
   })
 })
-
-// const alerty = exports.alerty = ()=> {
-//   console.log('alert!');
-// }
