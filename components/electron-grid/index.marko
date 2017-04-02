@@ -1,37 +1,25 @@
-
 static {
-const { ipcRenderer, app, shell, remote } = require('electron')
-const mainProcess = remote.require('./main')
-const currentWindow = remote.getCurrentWindow()
+  const { ipcRenderer, app, shell, remote } = require('electron')
+  const mainProcess = remote.require('./main')
+  const currentWindow = remote.getCurrentWindow()
 }
 
-
 class {
-  onCreate() {
-    this.state = {
-      clicked: true
-    }
-  }
-
-  onMount() {
-    ipcRenderer.on('clicked', () => {
-      this.setState({clicked: true})
-    })
-  }
 
   distract(url, e) {
     e.preventDefault()
     mainProcess.createWindow(url)
   }
+
 }
 
 div.grid
-    div.cell on-click('distract',  'https://en.wikipedia.org/wiki/Special:Random') -- Wikipedia
-    div.cell on-click('distract', 'http://random.accessyoutube.org.uk/') -- TED Talk
-    div.cell on-click('distract', 'https://splice.com/sounds/beatmaker') -- Beat Maker
-    div.cell on-click('distract', 'http://www.randomvideogenerator.com/') -- Music Videos
-    div.cell on-click('distract', 'http://www.trashloop.com/') -- Throw Your Trash Away
-    div.cell on-click('distract', 'http://www.everydayim.com/') -- Hustlin'
-    div.cell on-click('distract', 'http://www.pointerpointer.com/') -- Pointer
-    div.cell on-click('distract', 'http://www.gifff.in/centered/') -- Gif
-    div.cell on-click('distract', 'http://www.staggeringbeauty.com/') -- Staggering Beauty
+  div.cell on-click('distract',  'https://en.wikipedia.org/wiki/Special:Random') -- Wikipedia
+  div.cell on-click('distract', 'http://random.accessyoutube.org.uk/') -- TED Talk
+  div.cell on-click('distract', 'https://splice.com/sounds/beatmaker') -- Beat Maker
+  div.cell on-click('distract', 'http://www.randomvideogenerator.com/') -- Music Videos
+  div.cell on-click('distract', 'http://www.trashloop.com/') -- Throw Your Trash Away
+  div.cell on-click('distract', 'http://www.everydayim.com/') -- Hustlin'
+  div.cell on-click('distract', 'http://www.pointerpointer.com/') -- Pointer
+  div.cell on-click('distract', 'http://www.gifff.in/centered/') -- Gif
+  div.cell on-click('distract', 'http://www.staggeringbeauty.com/') -- Staggering Beauty
