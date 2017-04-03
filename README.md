@@ -20,7 +20,7 @@ we ran into during our plight.
 
 [Blog #2](https://medium.com/@dylanavery720/marko-marko-2-components-electron-32b4294fe045)
 
-[Blog #3](https://medium.com/@dylanavery720/marko-marko-2-components-electron-32b4294fe045)
+[Blog #3](https://medium.com/@dylanavery720/marko-marko-3-electron-webpack-84e3edbe90cc)
 
 
 #### Chelle Tuerk
