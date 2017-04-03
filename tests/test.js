@@ -34,12 +34,12 @@ describe('App starts', function () {
       .should.eventually.equal(1)
     })
 
-  it('opens a visible window', ()=> {
+  it('opens a window', ()=> {
     return app.client.waitUntilWindowLoaded()
       .browserWindow.isVisible().should.eventually.be.true
     })
 
-  it('should not display dev tools', ()=> {
+  it('opens a window', ()=> {
     return app.client.waitUntilWindowLoaded()
       .browserWindow.isDevToolsOpened().should.eventually.be.false
     })
@@ -72,16 +72,15 @@ describe('App starts', function () {
         })
       })
 
-
-//this test says our app name is Electron
-  it.skip('should have correct title', ()=> {
-    return app.client.waitUntilWindowLoaded().getTitle()
-      .should.eventually.equal('Markostractions')
-  })
-
-  it.skip('should display nine buttons', ()=> {
-    return app.client('.grid').children.length
-      .should.eventually.equal(9)
-  })
-
+//
+// //this test says our app name is Electron
+//   it.skip('should have correct title', ()=> {
+//     return app.client.waitUntilWindowLoaded().getTitle()
+//       .should.eventually.equal('Markostractions')
+//   })
+//
+//   it('should display nine buttons', ()=> {
+//     return app.client('.grid').children.length
+//       .should.eventually.equal(9)
+//   })
 })
