@@ -1,16 +1,23 @@
 static {
-  const { ipcRenderer, app, shell, remote } = require('electron')
+  const electron = require('electron')
+  const remote = electron.remote
+  const ipc = electron.ipcRenderer
   const mainProcess = remote.require('./main')
   const currentWindow = remote.getCurrentWindow()
 }
 
 class {
 
+  onMount() {
+    ipc.on('clicked', () => {
+      console.log('Welcome Back Chelle')
+    })
+  }
+
   distract(url, e) {
     e.preventDefault()
     mainProcess.createWindow(url)
   }
-
 }
 
 div.grid
