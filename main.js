@@ -39,7 +39,6 @@ const createWindow = exports.createWindow = (url) => {
 app.on('ready', ()=> {
   topWindow = new BrowserWindow()
   topWindow.loadURL('file://' + __dirname + '/index.marko')
-  topWindow.webContents.openDevTools();
   topWindow.on('closed', ()=> {
     topWindow = null
   })
