@@ -4,16 +4,36 @@ const windows = new Set()
 
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
+const dialog = electron.dialog;
 
 let topWindow = null
 
 const createWindow = exports.createWindow = (url) => {
-  let childWindow = new BrowserWindow({parent: topWindow, height: 600, width: 700, title: 'loading...'})
+  let childWindow = new BrowserWindow({height: 600, width: 700, title: 'loading...'})
   windows.add(childWindow)
   childWindow.loadURL(url)
   childWindow.on('close', () => {
-    childWindow.send('clicked')
+    const result = dialog.showMessageBox(childWindow, {
+      type: 'warning',
+      title: 'close this distraction?',
+      message: 'Do you want another distraction?',
+      buttons: [
+        'No',
+        'Reload!'
+      ],
+      defaultId: 0,
+      cancelId: 1
+    })
+    childWindow.webContents.send('clicked')
+    if(result === 1) createWindow(url)
  })
+topWindow.hide()
+ childWindow.on('closed', () => {
+   topWindow.show()
+   windows.delete(childWindow)
+   childWindow = null
+ });
+ return childWindow
 }
 
 app.on('ready', ()=> {
