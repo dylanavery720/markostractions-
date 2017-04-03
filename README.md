@@ -15,7 +15,7 @@ we ran into during our plight.
 #### Dylan Avery
 [Blog #1](https://medium.com/@dylanavery720/marko-marko-1-markojs-bcd6528af2f9)
 [Blog #2](https://medium.com/@dylanavery720/marko-marko-2-components-electron-32b4294fe045)
-[Blog #3](https://medium.com/@dylanavery720/marko-marko-2-components-electron-32b4294fe045)
+[Blog #3](https://medium.com/@dylanavery720/marko-marko-3-electron-webpack-84e3edbe90cc)
 
 #### Chelle Tuerk
 [Blog #1](https://medium.com/@tuerkbot/marko-yolo-980f1041c3e6)
